@@ -1,20 +1,20 @@
 <template>
   <div class="home">
     <ExpenseForm msg="Welcome to Your Vue.js App" />
-    <Expenses :expenses="expenses"/>
+    <ExpensesContainer :expenses="expenses" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import ExpenseForm from "@/components/ExpenseForm.vue";
-import Expenses from "@/components/Expenses.vue";
+import ExpensesContainer from "@/components/ExpensesContainer.vue";
 
 export default {
   name: "Home",
   components: {
     ExpenseForm,
-    Expenses
+    ExpensesContainer,
   },
   data() {
     return {
