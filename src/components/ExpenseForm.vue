@@ -17,7 +17,6 @@
     <input type="radio" id="expense" name="etype" value="Expense">
     <label for="expense">Expense</label><br>
     <br>
-    <br>
     <Button text="Confirm Expense" color="white" type="submit"></Button>
   </form>
 </template>
