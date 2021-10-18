@@ -1,6 +1,6 @@
 <template>
   <div :key="expense.id" v-for="expense in expenses">
-    <Expense :name="expense.name" :cost="expense.cost" :date="expense.date"/>
+    <Expense :name="expense.name" :cost="expense.costFormatted" :date="expense.date"/>
   </div>
 </template>
 

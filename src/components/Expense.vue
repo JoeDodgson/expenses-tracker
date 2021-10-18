@@ -1,6 +1,6 @@
 <template>
   <div class="expense-card">
-    <h3>{{ name }} - £{{ cost }} - {{ date }}</h3>
+    <h3>{{ name }} - {{ cost }} - {{ date }}</h3>
     <div>
       <Button text="Modify" color="grey"/>
       <Button text="Delete" color="red"/>
