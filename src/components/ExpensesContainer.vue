@@ -1,6 +1,6 @@
 <template>
   <div :key="expense.id" v-for="expense in expenses">
-    <Expense :name="expense.name" :cost="expense.cost" :date="expense.date" />
+    <Expense :name="expense.name" :cost="expense.cost" :date="expense.date"/>
   </div>
 </template>
 
@@ -8,7 +8,9 @@
 import Expense from "@/components/Expense.vue";
 export default {
   name: "ExpensesContainer",
-  components: Expense,
+  components: {
+    Expense
+  },
   props: {
     expenses: Array,
   },
