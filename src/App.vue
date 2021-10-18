@@ -1,19 +1,18 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <Navbar />
   <Header />
   <router-view />
 </template>
 
 <script>
 import Header from './components/Header'
+import Navbar from './components/Navbar'
 
 export default {
   name: 'App',
   components: {
-    Header
+    Header,
+    Navbar
   }
 }
 </script>
@@ -25,10 +24,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  max-width: 576px;
+  margin: auto;
+  border: 2px solid #2c3e50;
+  border-radius: 5px;
 }
 
 #nav {
-  padding: 30px;
+  padding: 15px;
 
   a {
     font-weight: bold;
