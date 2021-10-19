@@ -1,6 +1,7 @@
 <template>
   <div class="home">
-    <ExpenseForm />
+    <h2 class="title-left">Add expense</h2>
+    <NewExpense />
     <div>
       <h3>Balance: {{ balance }}</h3>
     </div>
@@ -10,7 +11,7 @@
 
 <script>
 // @ is an alias to /src
-import ExpenseForm from "@/components/ExpenseForm.vue";
+import NewExpense from "@/components/NewExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
 
 const formatCurrency = (value, language, currency) => {
@@ -27,7 +28,7 @@ return formattedCurrency;
 export default {
   name: "Home",
   components: {
-    ExpenseForm,
+    NewExpense,
     ExpensesContainer,
   },
   data() {

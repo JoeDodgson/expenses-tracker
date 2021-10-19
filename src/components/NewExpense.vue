@@ -24,7 +24,7 @@
 <script>
 import Button from './Button'
 export default {
-  name: 'ExpenseForm',
+  name: 'NewExpense',
   components: {
     Button
   }
@@ -32,7 +32,4 @@ export default {
 </script>
 
 <style>
-  #expenses-form {
-    padding: 15px;
-  }
 </style>
