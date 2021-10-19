@@ -22,7 +22,4 @@ export default {
 .left-title {
   text-align: left;
 }
-.expenses-container {
-  padding: 15px;
-}
 </style>

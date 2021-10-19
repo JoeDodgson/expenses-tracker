@@ -75,8 +75,6 @@ table {
 }
 
 #nav {
-  padding: 15px;
-
   a {
     font-weight: bold;
     color: #2c3e50;
@@ -85,5 +83,13 @@ table {
       color: #42b983;
     }
   }
+}
+
+.title-left {
+  text-align: left;
+}
+
+.home, .manage-expenses, #nav {
+  padding: 15px;
 }
 </style>
