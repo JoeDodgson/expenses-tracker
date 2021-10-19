@@ -33,7 +33,7 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-  .expense-details h3, p {
+  .expense-details > h3, .expense-details > p {
     margin: 5px 0;
     text-align: left;
   }
