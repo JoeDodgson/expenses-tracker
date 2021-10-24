@@ -2,6 +2,7 @@
   <div class="manage-expenses">
     <h2 class="title-left">Search for expenses</h2>
     <SearchExpense />
+    <SortBy />
     <ExpensesContainer :expenses="expenses" />
   </div>
 </template>
@@ -10,6 +11,7 @@
 // @ is an alias to /src
 import SearchExpense from "@/components/SearchExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
+import SortBy from "@/components/SortBy.vue";
 
 const formatCurrency = (value, language, currency) => {
   const formattedCurrency = new Intl.NumberFormat(
@@ -27,6 +29,7 @@ export default {
   components: {
     SearchExpense,
     ExpensesContainer,
+    SortBy,
   },
   data() {
     return {
