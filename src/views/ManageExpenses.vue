@@ -1,18 +1,17 @@
 <template>
-  <div class="home">
-    <h2 class="title-left">Add expense</h2>
-    <NewExpense />
-    <div>
-      <h3>Balance: {{ balance }}</h3>
-    </div>
+  <div class="manage-expenses">
+    <h2 class="title-left">Search for expenses</h2>
+    <SearchExpense />
+    <SortBy />
     <ExpensesContainer :expenses="expenses" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import NewExpense from "@/components/NewExpense.vue";
+import SearchExpense from "@/components/SearchExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
+import SortBy from "@/components/SortBy.vue";
 
 const formatCurrency = (value, language, currency) => {
   const formattedCurrency = new Intl.NumberFormat(
@@ -28,8 +27,9 @@ return formattedCurrency;
 export default {
   name: "Home",
   components: {
-    NewExpense,
+    SearchExpense,
     ExpensesContainer,
+    SortBy,
   },
   data() {
     return {
@@ -72,3 +72,6 @@ export default {
   }
 };
 </script>
+
+<style>
+</style>
