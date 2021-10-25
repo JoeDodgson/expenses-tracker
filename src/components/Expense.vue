@@ -1,5 +1,5 @@
 <template>
-  <div class="expense-card" :style="{ background: type === 'income' ? 'rgb(0, 128, 0, 0.2)' : 'rgba(255, 0, 0, 0.2)' }">
+  <div :class="[type === 'income' ? 'income' : 'expense', 'expense-card']">
     <div class="expense-details">
       <h3>{{ type === 'income' ? '+' : '-'}} {{ cost }}</h3>
       <p>{{ name }}</p>
@@ -36,5 +36,13 @@ export default {
   .expense-details > h3, .expense-details > p {
     margin: 5px 0;
     text-align: left;
+  }
+
+  .income {
+    background: rgb(0, 128, 0, 0.2)
+  }
+
+  .expense {
+    background: rgba(255, 0, 0, 0.2)
   }
 </style>
