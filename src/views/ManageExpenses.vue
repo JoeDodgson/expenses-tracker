@@ -3,7 +3,7 @@
     <h2 class="title-left">Search for expenses</h2>
     <SearchExpense />
     <SortBy />
-    <ExpensesContainer :expenses="expenses" />
+    <ExpensesContainer :expenses="expenses" @delete-expense="deleteExpense($event)"/>
   </div>
 </template>
 
@@ -37,6 +37,11 @@ export default {
       balance: 0,
     }
   },
+  methods: {
+    deleteExpense(id) {
+      this.expenses = this.expenses.filter(expense => expense.id !== id);
+    }
+  },
   created() {
     this.expenses = [
       {
@@ -44,6 +49,7 @@ export default {
         name: 'Arup September pay',
         date: '2021-09-15',
         cost: 2000,
+        formattedCost: '£2000.00',
         type: 'income',
       },
       {
@@ -51,6 +57,7 @@ export default {
         name: 'Tesco food shopping',
         date: '2021-10-01',
         cost: 50.99,
+        formattedCost: '£50.99',
         type: 'expenditure',
       },
       {
@@ -58,6 +65,7 @@ export default {
         name: 'Red Hot Chili Peppers tickets',
         date: '2021-10-13',
         cost: 190,
+        formattedCost: '£190.00',
         type: 'expenditure',
       },
     ];
@@ -69,7 +77,7 @@ export default {
       }
     }
     this.balance = formatCurrency(this.expenses.reduce((a,b) => b['type'] == 'income' ? a + b['cost'] : a - b['cost'], 0), 'en-GB', 'GBP');
-  }
+  },
 };
 </script>
 
