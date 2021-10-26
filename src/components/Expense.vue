@@ -1,13 +1,13 @@
 <template>
-  <div :class="[type === 'income' ? 'income' : 'expense', 'expense-card']">
+  <div :class="[expense.type === 'income' ? 'income' : 'expense', 'expense-card']">
     <div class="expense-details">
-      <h3>{{ type === 'income' ? '+' : '-'}} {{ cost }}</h3>
-      <p>{{ name }}</p>
-      <p>{{ date }}</p>
+      <h3>{{ expense.type === 'income' ? '+' : '-'}} {{ expense.formattedCost }}</h3>
+      <p>{{ expense.name }}</p>
+      <p>{{ expense.date }}</p>
     </div>
     <div>
       <Button text="Modify" color="rgb(200 200 200)"/>
-      <Button text="Delete" color="rgb(200 200 200)"/>
+      <Button text="Delete" color="rgb(200 200 200)" @click="$emit('delete-expense', expense.id)"/>
     </div>
   </div>
 </template>
@@ -19,7 +19,10 @@ export default {
   components: {
     Button
   },
-  props: ["name", "cost", "date", "type"],
+  props: {
+    expense: Object,
+  },
+  emits: ['delete-expense'],
 };
 </script>
 
