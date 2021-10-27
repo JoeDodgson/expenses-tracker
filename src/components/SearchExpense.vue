@@ -32,7 +32,7 @@
 <script>
 import Button from './Button'
 export default {
-  name: 'NewExpense',
+  name: 'SaveExpense',
   components: {
     Button
   }

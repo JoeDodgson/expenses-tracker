@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h2 class="title-left">Add expense</h2>
-    <NewExpense />
+    <SaveExpense />
     <div>
       <h3>Balance: {{ balance }}</h3>
     </div>
@@ -11,13 +11,13 @@
 
 <script>
 // @ is an alias to /src
-import NewExpense from "@/components/NewExpense.vue";
+import SaveExpense from "@/components/SaveExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
 
 export default {
   name: "Home",
   components: {
-    NewExpense,
+    SaveExpense,
     ExpensesContainer,
   },
   props: {
