@@ -1,7 +1,7 @@
 <template>
   <Navbar />
   <Header />
-  <router-view :expenses="expenses" :balance="balance"/>
+  <router-view :expenses="expenses" :balance="balance" @add-expense="addExpense($event)"/>
   <Footer />
 </template>
 
@@ -37,6 +37,10 @@ export default {
   methods: {
     deleteExpense(id) {
       this.expenses = this.expenses.filter(expense => expense.id !== id);
+    },
+    addExpense(expense) {
+      this.expenses = [...this.expenses, expense];
+      console.log(expense);
     }
   },
   created() {

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h2 class="title-left">Add expense</h2>
-    <SaveExpense />
+    <SaveExpense @add-expense="$emit('add-expense', $event)"/>
     <div>
       <h3>Balance: {{ balance }}</h3>
     </div>
@@ -24,5 +24,6 @@ export default {
     expenses: Array,
     balance: String,
   },
+  emits: ['add-expense'],
 };
 </script>
