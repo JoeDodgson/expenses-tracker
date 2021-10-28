@@ -1,9 +1,9 @@
 <template>
   <div class="manage-expenses">
     <h2 class="title-left">Search for expenses</h2>
-    <SearchExpense />
+    <SearchExpense @search-name="filterExpenses('name', $event)"/>
     <SortBy />
-    <ExpensesContainer :expenses="expenses" @delete-expense="deleteExpense($event)"/>
+    <ExpensesContainer :expenses="filteredExpenses" @delete-expense="deleteExpense($event)"/>
   </div>
 </template>
 
@@ -23,6 +23,23 @@ export default {
   props: {
     expenses: Array,
     balance: String
-  }
+  },
+  data() {
+    return {
+      filteredExpenses: Array,
+    }
+  },
+  created() {
+    this.filteredExpenses = this.expenses;
+  },
+  methods: {
+    filterExpenses(filterProperty, text) {
+      this.filteredExpenses = this.expenses
+        .filter((expense => {
+          return expense[filterProperty].toLowerCase().includes(text.toLowerCase());
+        }));
+    },
+  },
+
 };
 </script>
