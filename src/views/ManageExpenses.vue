@@ -1,7 +1,7 @@
 <template>
   <div class="manage-expenses">
     <h2 class="title-left">Search for expenses</h2>
-    <SearchExpense @search-name="filterExpenses('name', $event)"/>
+    <SearchExpense @search-name="filterName($event)"/>
     <SortBy />
     <ExpensesContainer :expenses="filteredExpenses" @delete-expense="deleteExpense($event)"/>
   </div>
@@ -26,18 +26,30 @@ export default {
   },
   data() {
     return {
-      filteredExpenses: Array,
+      filteredExpenses: [],
+      filterValues: {},
+      filterProperties: ['name'],
     }
   },
   created() {
     this.filteredExpenses = this.expenses;
   },
   methods: {
-    filterExpenses(filterProperty, text) {
-      this.filteredExpenses = this.expenses
-        .filter((expense => {
-          return expense[filterProperty].toLowerCase().includes(text.toLowerCase());
-        }));
+    filterName(text) {
+      this.filterValues['name'] = text.toLowerCase();
+      this.filterExpenses();
+    },
+    filterExpenses() {
+      let updatedFilteredExpenses = this.expenses;
+      for (let i = 0; i < this.filterProperties.length; i++) {
+        const filterProperty = this.filterProperties[i];
+        const filterValue = this.filterValues[filterProperty];
+        updatedFilteredExpenses = updatedFilteredExpenses
+          .filter((expense => {
+            return expense[filterProperty].toLowerCase().includes(filterValue);
+          }));
+      }
+      this.filteredExpenses = updatedFilteredExpenses;
     },
   },
 
