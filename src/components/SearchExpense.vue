@@ -18,11 +18,11 @@
     <input type="text" id="" name="" value=""/>
     <br>
     <br>
-    <input type="radio" id="income" name="etype" value="income">
+    <input type="radio" id="income" name="etype" value="income" @change="searchType">
     <label for="income">Income</label><br>
-    <input type="radio" id="expense" name="etype" value="expense">
-    <label for="expense">Expense</label><br>
-    <input type="radio" id="expense" name="etype" value="both">
+    <input type="radio" id="expense" name="etype" value="expenditure" @change="searchType">
+    <label for="expense">Expenditure</label><br>
+    <input type="radio" id="expense" name="etype" value="" @change="searchType">
     <label for="both">Both</label><br>
     <br>
   </form>
@@ -31,11 +31,15 @@
 <script>
 export default {
   name: 'SaveExpense',
-  emits: ['search-name'],
+  emits: ['search-name', 'search-type'],
   methods: {
     searchName(event) {
       const text = event.target.value;
       this.$emit('search-name', text)
+    },
+    searchType(event) {
+      const type = event.target.value;
+      this.$emit('search-type', type);
     }
   }
 }
