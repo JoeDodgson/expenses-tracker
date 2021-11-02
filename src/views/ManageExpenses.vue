@@ -6,6 +6,8 @@
       @search-type="updateTextFilter('type', $event)"
       @search-start-date="updateDateFilter('startDate', $event)"
       @search-end-date="updateDateFilter('endDate', $event)"
+      @search-min-cost="updateCostFilter('minCost', $event)"
+      @search-max-cost="updateCostFilter('maxCost', $event)"
     />
     <SortBy @sort-expenses="sortExpenses($event)"/>
     <ExpensesContainer :expenses="filteredExpenses" @delete-expense="deleteExpense($event)"/>
@@ -40,6 +42,10 @@ export default {
         'startDate': null,
         'endDate': null,
       },
+      costFilters: {
+        'minCost': null,
+        'maxCost': null,
+      }
     }
   },
   created() {
@@ -52,6 +58,11 @@ export default {
     },
     updateDateFilter(property, value) {
       this.dateFilters[property] = value;
+      this.filterExpenses();
+    },
+    updateCostFilter(property, value) {
+      console.log(`Updating cost filter: ${property}: ${value}`);
+      this.costFilters[property] = value;
       this.filterExpenses();
     },
     filterExpenses() {
@@ -68,10 +79,7 @@ export default {
       updatedFilteredExpenses = updatedFilteredExpenses
         .filter((expense => {
           // If both startDate and endDate filters
-          console.log(this.dateFilters['startDate']);
-          console.log(this.dateFilters['endDate']);
           if (this.dateFilters['startDate'] && this.dateFilters['endDate']) {
-            console.log("both start and end date");
             return Date.parse(expense['date']) > this.dateFilters['startDate'] && Date.parse(expense['date']) < this.dateFilters['endDate'];
           }
           // If only startDate filter
@@ -81,6 +89,23 @@ export default {
           // If only endDate filter
           if (!this.dateFilters['startDate'] && this.dateFilters['endDate']) {
             return Date.parse(expense['date']) < this.dateFilters['endDate'];
+          }
+          return true;
+        }))
+
+      // Filter by the min and max cost in the costFilters object
+        .filter((expense => {
+          // If both minCost and maxCost filters
+          if (this.costFilters['minCost'] && this.costFilters['maxCost']) {
+            return expense['cost'] > this.costFilters['minCost'] && expense['cost'] < this.costFilters['maxCost'];
+          }
+          // If only minCost filter
+          if (this.costFilters['minCost'] && !this.costFilters['maxCost']) {
+            return expense['cost'] > this.costFilters['minCost'];
+          }
+          // If only maxCost filter
+          if (!this.costFilters['minCost'] && this.costFilters['maxCost']) {
+            return expense['cost'] < this.costFilters['maxCost'];
           }
           return true;
         }));

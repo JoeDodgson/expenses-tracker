@@ -12,10 +12,10 @@
     <br>
     <br>
     <label for="minCost">Minimum cost</label>
-    <input type="text" id="" name="" value=""/>
+    <input type="text" id="" name="" value="" @keyup="searchMinCost"/>
     <br>
     <label for="maxCost">Maximum cost</label>
-    <input type="text" id="" name="" value=""/>
+    <input type="text" id="" name="" value="" @keyup="searchMaxCost"/>
     <br>
     <br>
     <input type="radio" id="income" name="etype" value="income" @change="searchType">
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'SaveExpense',
-  emits: ['search-name', 'search-type', 'search-start-date', 'search-end-date'],
+  emits: ['search-name', 'search-type', 'search-start-date', 'search-end-date', 'search-min-cost', 'search-max-cost'],
   methods: {
     searchName(event) {
       const text = event.target.value;
@@ -48,6 +48,14 @@ export default {
     searchEndDate(event) {
       const endDate = Date.parse(event.target.value);
       this.$emit('search-end-date', endDate);
+    },
+    searchMinCost(event) {
+      const minCost = event.target.value;
+      this.$emit('search-min-cost', minCost);
+    },
+    searchMaxCost(event) {
+      const maxCost = event.target.value;
+      this.$emit('search-max-cost', maxCost);
     },
   }
 }
