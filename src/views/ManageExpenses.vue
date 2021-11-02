@@ -27,11 +27,10 @@ export default {
   data() {
     return {
       filteredExpenses: [],
-      filterValues: {
+      textFilters: {
         'name': '',
         'type': '',
       },
-      filterProperties: ['name', 'type'],
     }
   },
   created() {
@@ -39,21 +38,17 @@ export default {
   },
   methods: {
     filterName(text) {
-      this.filterValues['name'] = text.toLowerCase();
+      this.textFilters['name'] = text.toLowerCase();
       this.filterExpenses();
     },
     filterType(type) {
-      console.log(this.expenses);
-      this.filterValues['type'] = type.toLowerCase();
+      this.textFilters['type'] = type.toLowerCase();
       this.filterExpenses();
     },
     filterExpenses() {
       let updatedFilteredExpenses = this.expenses;
-      for (let i = 0; i < this.filterProperties.length; i++) {
-        const filterProperty = this.filterProperties[i];
-        const filterValue = this.filterValues[filterProperty];
-        console.log(filterProperty);
-        console.log(filterValue);
+      for (const filterProperty in this.textFilters) {
+        const filterValue = this.textFilters[filterProperty];
         updatedFilteredExpenses = updatedFilteredExpenses
           .filter((expense => {
             return expense[filterProperty].toLowerCase().includes(filterValue);
