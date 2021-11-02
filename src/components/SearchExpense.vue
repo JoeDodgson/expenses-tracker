@@ -5,10 +5,10 @@
     <br>
     <br>
     <label for="startDate">Start date</label>
-    <input type="date" id="" name="" value=""/>
+    <input type="date" id="" name="" value="" @change="searchStartDate"/>
     <br>
     <label for="endDate">End date</label>
-    <input type="date" id="" name="" value=""/>
+    <input type="date" id="" name="" value="" @change="searchEndDate"/>
     <br>
     <br>
     <label for="minCost">Minimum cost</label>
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'SaveExpense',
-  emits: ['search-name', 'search-type'],
+  emits: ['search-name', 'search-type', 'search-start-date', 'search-end-date'],
   methods: {
     searchName(event) {
       const text = event.target.value;
@@ -40,7 +40,15 @@ export default {
     searchType(event) {
       const type = event.target.value;
       this.$emit('search-type', type);
-    }
+    },
+    searchStartDate(event) {
+      const startDate = Date.parse(event.target.value);
+      this.$emit('search-start-date', startDate);
+    },
+    searchEndDate(event) {
+      const endDate = Date.parse(event.target.value);
+      this.$emit('search-end-date', endDate);
+    },
   }
 }
 </script>
