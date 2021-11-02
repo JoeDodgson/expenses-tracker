@@ -6,7 +6,6 @@
       <p>{{ expense.date }}</p>
     </div>
     <div>
-      <Button text="Modify" color="rgb(200 200 200)"/>
       <Button text="Delete" color="rgb(200 200 200)" @click="$emit('delete-expense', expense.id)"/>
     </div>
   </div>

@@ -1,7 +1,12 @@
 <template>
   <Navbar />
   <Header />
-  <router-view :expenses="expenses" :balance="balance" @add-expense="addExpense($event)"/>
+  <router-view
+    :expenses="expenses"
+    :balance="balance"
+    @add-expense="addExpense($event)"
+    @delete-expense="deleteExpense($event)"
+  />
   <Footer />
 </template>
 
@@ -9,17 +14,6 @@
 import Header from './components/Header'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-
-const formatCurrency = (value, language, currency) => {
-  const formattedCurrency = new Intl.NumberFormat(
-    language, // BCP 47 language tag 
-    {
-      style: 'currency', // we want a currency
-      currency // ISO 4217 currency code
-    }
-  ).format(value);
-  return formattedCurrency;
-}
 
 export default {
   name: 'App',
@@ -37,11 +31,27 @@ export default {
   methods: {
     deleteExpense(id) {
       this.expenses = this.expenses.filter(expense => expense.id !== id);
+      this.updateBalance()
     },
     addExpense(expense) {
       this.expenses = [...this.expenses, expense];
-      console.log(expense);
-    }
+      this.updateBalance()
+    },
+    formatCurrency (value, language, currency) {
+      const formattedCurrency = new Intl.NumberFormat(
+        language, // BCP 47 language tag 
+        {
+          style: 'currency', // we want a currency
+          currency // ISO 4217 currency code
+        }
+      ).format(value);
+      return formattedCurrency;
+    },
+    updateBalance() {
+      console.log(this.balance);
+      console.log(this.expenses);
+      this.balance = this.formatCurrency(this.expenses.reduce((a,b) => b['type'] == 'income' ? a + b['cost'] : a - b['cost'], 0), 'en-GB', 'GBP');
+    },
   },
   created() {
     this.expenses = [
@@ -73,13 +83,12 @@ export default {
     for (let i = 0; i < this.expenses.length; i++) {
       const expenseItem = this.expenses[i];
       if (expenseItem['cost']) {
-        const priceFormattedUK = formatCurrency(expenseItem['cost'], 'en-GB', 'GBP')
+        const priceFormattedUK = this.formatCurrency(expenseItem['cost'], 'en-GB', 'GBP')
         this.expenses[i]['costFormatted'] = priceFormattedUK;
       }
-    }
-    this.balance = formatCurrency(this.expenses.reduce((a,b) => b['type'] == 'income' ? a + b['cost'] : a - b['cost'], 0), 'en-GB', 'GBP');
+    };
+    this.updateBalance();
   },
-
 }
 </script>
 
