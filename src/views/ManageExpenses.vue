@@ -1,7 +1,7 @@
 <template>
   <div class="manage-expenses">
     <h2 class="title-left">Search for expenses</h2>
-    <SearchExpense @search-name="filterName($event)" @search-type="filterType($event)"/>
+    <SearchExpense @search-name="updateFilter('name', $event)" @search-type="updateFilter('type', $event)"/>
     <SortBy @sort-expenses="sortExpenses($event)"/>
     <ExpensesContainer :expenses="filteredExpenses" @delete-expense="deleteExpense($event)"/>
   </div>
@@ -37,12 +37,8 @@ export default {
     this.filteredExpenses = this.expenses;
   },
   methods: {
-    filterName(text) {
-      this.textFilters['name'] = text.toLowerCase();
-      this.filterExpenses();
-    },
-    filterType(type) {
-      this.textFilters['type'] = type.toLowerCase();
+    updateFilter(property, value) {
+      this.textFilters[property] = value.toLowerCase();
       this.filterExpenses();
     },
     filterExpenses() {
