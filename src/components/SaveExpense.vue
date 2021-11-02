@@ -63,7 +63,7 @@ export default {
         return;
       }
 
-      const newCost = parseFloat(this.cost).toFixed(2);
+      const newCost = Math.round(this.cost * 100) / 100;
       const newFormattedCost = formatCurrency(newCost, 'en-GB', 'GBP');
 
       const newExpense = {

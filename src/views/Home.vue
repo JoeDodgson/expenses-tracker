@@ -5,7 +5,10 @@
     <div>
       <h3>Balance: {{ balance }}</h3>
     </div>
-    <ExpensesContainer :expenses="expenses" @delete-expense="deleteExpense($event)"/>
+    <ExpensesContainer
+      :expenses="expenses"
+      @delete-expense="$emit('delete-expense', $event)"
+    />
   </div>
 </template>
 
@@ -24,6 +27,6 @@ export default {
     expenses: Array,
     balance: String,
   },
-  emits: ['add-expense'],
+  emits: ['add-expense', 'delete-expense'],
 };
 </script>
