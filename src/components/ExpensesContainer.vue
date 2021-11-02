@@ -1,7 +1,7 @@
 <template>
   <div class="expenses-container">
     <h3 class="left-title">Saved Expenses</h3>
-    <Expense :key="expense.id" v-for="expense in expenses" :name="expense.name" :cost="expense.costFormatted" :date="expense.date" :type="expense.type"/>
+    <Expense :key="expense.id" v-for="expense in expenses" :expense="expense" @delete-expense="$emit('delete-expense', $event)"/>
   </div>
 </template>
 
@@ -15,6 +15,7 @@ export default {
   props: {
     expenses: Array,
   },
+  emits: ['delete-expense'],
 };
 </script>
 

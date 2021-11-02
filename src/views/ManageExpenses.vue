@@ -1,9 +1,16 @@
 <template>
   <div class="manage-expenses">
     <h2 class="title-left">Search for expenses</h2>
-    <SearchExpense />
-    <SortBy />
-    <ExpensesContainer :expenses="expenses" />
+    <SearchExpense 
+      @search-name="updateTextFilter('name', $event)"
+      @search-type="updateTextFilter('type', $event)"
+      @search-start-date="updateDateFilter('startDate', $event)"
+      @search-end-date="updateDateFilter('endDate', $event)"
+      @search-min-cost="updateCostFilter('minCost', $event)"
+      @search-max-cost="updateCostFilter('maxCost', $event)"
+    />
+    <SortBy @sort-expenses="sortExpenses($event)"/>
+    <ExpensesContainer :expenses="filteredExpenses" @delete-expense="deleteExpense($event)"/>
   </div>
 </template>
 
@@ -13,17 +20,6 @@ import SearchExpense from "@/components/SearchExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
 import SortBy from "@/components/SortBy.vue";
 
-const formatCurrency = (value, language, currency) => {
-  const formattedCurrency = new Intl.NumberFormat(
-    language, // BCP 47 language tag 
-    { 
-      style: 'currency', // we want a currency
-      currency // ISO 4217 currency code
-    }
-  ).format(value);
-return formattedCurrency;
-}
-
 export default {
   name: "Home",
   components: {
@@ -31,47 +27,114 @@ export default {
     ExpensesContainer,
     SortBy,
   },
+  props: {
+    expenses: Array,
+    balance: String
+  },
   data() {
     return {
-      expenses: [],
-      balance: 0,
+      filteredExpenses: [],
+      textFilters: {
+        'name': '',
+        'type': '',
+      },
+      dateFilters: {
+        'startDate': null,
+        'endDate': null,
+      },
+      costFilters: {
+        'minCost': null,
+        'maxCost': null,
+      }
     }
   },
   created() {
-    this.expenses = [
-      {
-        id: 1,
-        name: 'Arup September pay',
-        date: '2021-09-15',
-        cost: 2000,
-        type: 'income',
-      },
-      {
-        id: 2,
-        name: 'Tesco food shopping',
-        date: '2021-10-01',
-        cost: 50.99,
-        type: 'expenditure',
-      },
-      {
-        id: 3,
-        name: 'Red Hot Chili Peppers tickets',
-        date: '2021-10-13',
-        cost: 190,
-        type: 'expenditure',
-      },
-    ];
-    for (let i = 0; i < this.expenses.length; i++) {
-      const expenseItem = this.expenses[i];
-      if (expenseItem['cost']) {
-        const priceFormattedUK = formatCurrency(expenseItem['cost'], 'en-GB', 'GBP')
-        this.expenses[i]['costFormatted'] = priceFormattedUK;
+    this.filteredExpenses = this.expenses;
+  },
+  methods: {
+    updateTextFilter(property, value) {
+      this.textFilters[property] = value.toLowerCase();
+      this.filterExpenses();
+    },
+    updateDateFilter(property, value) {
+      this.dateFilters[property] = value;
+      this.filterExpenses();
+    },
+    updateCostFilter(property, value) {
+      console.log(`Updating cost filter: ${property}: ${value}`);
+      this.costFilters[property] = value;
+      this.filterExpenses();
+    },
+    filterExpenses() {
+      let updatedFilteredExpenses = this.expenses;
+      // Filter by all the values in the textFilters object
+      for (const filterProperty in this.textFilters) {
+        const filterValue = this.textFilters[filterProperty];
+        updatedFilteredExpenses = updatedFilteredExpenses
+          .filter((expense => {
+            return expense[filterProperty].toLowerCase().includes(filterValue);
+          }));
       }
-    }
-    this.balance = formatCurrency(this.expenses.reduce((a,b) => b['type'] == 'income' ? a + b['cost'] : a - b['cost'], 0), 'en-GB', 'GBP');
-  }
+      // Filter by the start and end dates in the dateFilters object
+      updatedFilteredExpenses = updatedFilteredExpenses
+        .filter((expense => {
+          // If both startDate and endDate filters
+          if (this.dateFilters['startDate'] && this.dateFilters['endDate']) {
+            return Date.parse(expense['date']) > this.dateFilters['startDate'] && Date.parse(expense['date']) < this.dateFilters['endDate'];
+          }
+          // If only startDate filter
+          if (this.dateFilters['startDate'] && !this.dateFilters['endDate']) {
+            return Date.parse(expense['date']) > this.dateFilters['startDate'];
+          }
+          // If only endDate filter
+          if (!this.dateFilters['startDate'] && this.dateFilters['endDate']) {
+            return Date.parse(expense['date']) < this.dateFilters['endDate'];
+          }
+          return true;
+        }))
+
+      // Filter by the min and max cost in the costFilters object
+        .filter((expense => {
+          // If both minCost and maxCost filters
+          if (this.costFilters['minCost'] && this.costFilters['maxCost']) {
+            return expense['cost'] > this.costFilters['minCost'] && expense['cost'] < this.costFilters['maxCost'];
+          }
+          // If only minCost filter
+          if (this.costFilters['minCost'] && !this.costFilters['maxCost']) {
+            return expense['cost'] > this.costFilters['minCost'];
+          }
+          // If only maxCost filter
+          if (!this.costFilters['minCost'] && this.costFilters['maxCost']) {
+            return expense['cost'] < this.costFilters['maxCost'];
+          }
+          return true;
+        }));
+
+      this.filteredExpenses = updatedFilteredExpenses;
+    },
+    sortExpenses(sortType) {
+      switch (sortType) {
+        case "date-n-o":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => new Date(b['date']) - new Date(a['date']));
+          break;
+        case "date-o-n":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => new Date(a['date']) - new Date(b['date']));
+          break;
+        case "name-a-z":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => a['name'] < b['name'] ? -1 : 1);
+          break;
+        case "name-z-a":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => a['name'] < b['name'] ? 1 : -1);
+          break;
+        case "value-l-h":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => a['cost'] - b['cost']);
+          break;
+        case "value-h-l":
+          this.filteredExpenses = this.filteredExpenses.sort((a,b) => b['cost'] - a['cost']);
+          break;
+      }
+    },
+  },
+
 };
 </script>
-
-<style>
-</style>
