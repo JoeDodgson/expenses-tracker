@@ -1,34 +1,52 @@
 # vue-expenses-tracker
 
-## Project setup
-```
-npm install
-```
+## Table of contents
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+[Description](#description)
 
-### Compiles and minifies for production
-```
-npm run build
-```
+[Usage](#usage)
 
-### Run your unit tests
-```
-npm run test:unit
-```
+[Contributing](#contributing)
 
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
+[Tech Stack](#tech-stack)
 
-### Lints and fixes files
-```
-npm run lint
-```
+[License](#license)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Tests](#tests)
+
+[Contact](#contact)
+
+
+## Description
+A website where users can manage expenses. Users add an income or expense in the app and can view their balance.
+
+
+## Usage
+No installation required. Access the site at:
+
+https://vue-expenses-tracker.netlify.app/
+
+
+## Contributing
+Please provide any feedback to Joe Dodgson. Feel free to fork this repo and add your own features!
+
+
+## Tech stack
+This project was built using:
+* Node
+* Vue
+* SASS
+
+
+## License
+MIT (Open source)
+
+
+## Tests
+No testing framework was used for this project, but I plan to add tests.
+
+
+## Contact
+For any questions about this project, please contact the author, Joe Dodgson, at the following email address:
+
+j.dodgson@live.co.uk
