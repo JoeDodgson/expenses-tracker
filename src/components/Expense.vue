@@ -2,7 +2,7 @@
   <div
     :class="[expense.type === 'income' ? 'income' : 'expense', 'expense-card']"
   >
-    <div class="expense-details">
+    <div>
       <h3>
         {{ expense.type === "income" ? "+" : "-" }} {{ expense.formattedCost }}
       </h3>
@@ -34,26 +34,4 @@ export default {
 </script>
 
 <style>
-.expense-card {
-  margin: 5px 0;
-  padding: 10px 20px;
-  cursor: pointer;
-  border: 2px solid #000;
-  border-radius: 2.5px;
-  display: flex;
-  justify-content: space-between;
-}
-.expense-details > h3,
-.expense-details > p {
-  margin: 5px 0;
-  text-align: left;
-}
-
-.income {
-  background: rgb(0, 128, 0, 0.2);
-}
-
-.expense {
-  background: rgba(255, 0, 0, 0.2);
-}
 </style>
