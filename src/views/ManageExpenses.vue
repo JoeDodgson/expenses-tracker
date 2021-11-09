@@ -1,6 +1,6 @@
 <template>
   <div class="manage-expenses">
-    <h2 class="title-left">Search for expenses</h2>
+    <h4 class="text-h4 title-left">Search for expenses</h4>
     <SearchExpense 
       @search-name="updateTextFilter('name', $event)"
       @search-type="updateTextFilter('type', $event)"

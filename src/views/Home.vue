@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h2 class="title-left">Add expense</h2>
+    <h4 class="text-h4 title-left">Add expense</h4>
     <SaveExpense @add-expense="$emit('add-expense', $event)"/>
     <div>
       <h3>Balance: {{ balance }}</h3>
