@@ -1,11 +1,11 @@
 <template>
-    <header>
-        <h1 class="text-h1">Expenses Tracker</h1>
-    </header>
+  <header>
+    <h1 class="text-h1">Expenses Tracker</h1>
+  </header>
 </template>
 
 <script>
 export default {
-    name: 'Header'
-}
+  name: "Header",
+};
 </script>

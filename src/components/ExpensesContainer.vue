@@ -1,7 +1,12 @@
 <template>
   <div class="expenses-container">
     <h3 class="left-title">Saved Expenses</h3>
-    <Expense :key="expense.id" v-for="expense in expenses" :expense="expense" @delete-expense="$emit('delete-expense', $event)"/>
+    <Expense
+      :key="expense.id"
+      v-for="expense in expenses"
+      :expense="expense"
+      @delete-expense="$emit('delete-expense', $event)"
+    />
   </div>
 </template>
 
@@ -10,12 +15,12 @@ import Expense from "@/components/Expense.vue";
 export default {
   name: "ExpensesContainer",
   components: {
-    Expense
+    Expense,
   },
   props: {
     expenses: Array,
   },
-  emits: ['delete-expense'],
+  emits: ["delete-expense"],
 };
 </script>
 

@@ -9,22 +9,21 @@
       <option value="value-l-h">Value: Low to High</option>
       <option value="value-h-l">Value: High to Low</option>
     </select>
-    <br><br>
+    <br /><br />
   </form>
 </template>
 
 <script>
 export default {
   name: "SortBy",
-  emits: ['sort-expenses'],
+  emits: ["sort-expenses"],
   methods: {
     sortExpenses(event) {
       const sortType = event.target.value;
-      this.$emit('sort-expenses', sortType);
-    }
-  }
+      this.$emit("sort-expenses", sortType);
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
