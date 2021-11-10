@@ -48,8 +48,6 @@ export default {
       return formattedCurrency;
     },
     updateBalance() {
-      console.log(this.balance);
-      console.log(this.expenses);
       this.balance = this.formatCurrency(
         this.expenses.reduce(
           (a, b) => (b["type"] == "income" ? a + b["cost"] : a - b["cost"]),

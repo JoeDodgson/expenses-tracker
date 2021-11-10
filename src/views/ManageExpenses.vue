@@ -64,7 +64,6 @@ export default {
       this.filterExpenses();
     },
     updateCostFilter(property, value) {
-      console.log(`Updating cost filter: ${property}: ${value}`);
       this.costFilters[property] = value;
       this.filterExpenses();
     },
