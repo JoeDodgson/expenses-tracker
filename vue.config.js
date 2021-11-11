@@ -3,7 +3,7 @@ module.exports = {
     loaderOptions: {
       sass: {
         additionalData: `
-            @import "@/scss/quasar.variables.sass"
+            @import "@/sass/quasar.variables.sass"
         `,
       },
     },
