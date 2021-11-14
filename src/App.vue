@@ -1,4 +1,46 @@
 <template>
+<q-layout view="lHh Lpr lFf">
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
+
+        <q-toolbar-title>
+          Expenses Tracker
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      bordered
+    >
+      <q-list>
+        <q-item-label
+          header
+        >
+          Essential Links
+        </q-item-label>
+
+        <EssentialLink
+          v-for="link in this.linksList"
+          :key="link.title"
+          v-bind="link"
+        />
+      </q-list>
+    </q-drawer>
+
+    <q-page-container>
+      <router-view />
+    </q-page-container>
+  </q-layout>
   <Navbar />
   <Header />
   <router-view
@@ -14,6 +56,8 @@
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import { ref } from 'vue'
+import EssentialLink from './components/EssentialLink.vue'
 
 export default {
   name: "App",
@@ -21,11 +65,38 @@ export default {
     Header,
     Navbar,
     Footer,
+    EssentialLink,
   },
   data() {
     return {
       expenses: [],
       balance: 0,
+      linksList: [
+        {
+          title: 'Home',
+          caption: '',
+          icon: 'fas fa-home',
+          link: '/'
+        },
+        {
+          title: 'Manage Expenses',
+          caption: '',
+          icon: 'fas fa-edit',
+          link: '#/manage-expenses'
+        },
+        {
+          title: 'About',
+          caption: '',
+          icon: 'fas fa-info',
+          link: '#/about'
+        },
+        {
+          title: 'Github Repo',
+          caption: 'github.com/JoeDodgson/expenses-tracker',
+          icon: 'fab fa-github',
+          link: 'https://github.com/JoeDodgson/expenses-tracker'
+        },
+      ]
     };
   },
   methods: {
@@ -98,6 +169,16 @@ export default {
     }
     this.updateBalance();
   },
+  setup () {
+    const leftDrawerOpen = ref(false)
+
+    return {
+      leftDrawerOpen,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      }
+    }
+  }
 };
 </script>
 
