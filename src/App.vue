@@ -76,25 +76,29 @@ export default {
           title: 'Home',
           caption: '',
           icon: 'fas fa-home',
-          link: '/'
+          link: '#/',
+          newTab: false,
         },
         {
           title: 'Manage Expenses',
           caption: '',
           icon: 'fas fa-edit',
-          link: '#/manage-expenses'
+          link: '#/manage-expenses',
+          newTab: false,
         },
         {
           title: 'About',
           caption: '',
           icon: 'fas fa-info',
-          link: '#/about'
+          link: '#/about',
+          newTab: false,
         },
         {
           title: 'Github Repo',
           caption: 'github.com/JoeDodgson/expenses-tracker',
           icon: 'fab fa-github',
-          link: 'https://github.com/JoeDodgson/expenses-tracker'
+          link: 'https://github.com/JoeDodgson/expenses-tracker',
+          newTab: true,
         },
       ]
     };

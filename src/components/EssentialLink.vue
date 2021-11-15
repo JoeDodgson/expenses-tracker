@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable tag="a" target="_blank" :href="link">
+  <q-item clickable tag="a" :target="newTab ? '_blank' : '_self'" :href="link">
     <q-item-section v-if="icon" avatar>
       <q-icon :name="icon" />
     </q-item-section>
@@ -33,6 +33,10 @@ export default defineComponent({
     icon: {
       type: String,
       default: ''
+    },
+    newTab: {
+      type: Boolean,
+      default: false
     }
   }
 })
