@@ -4,6 +4,7 @@ module.exports = {
       sass: {
         additionalData: `
             @import "@/sass/quasar.variables.sass"
+            @import "@/sass/quasar.sass"
         `,
       },
     },

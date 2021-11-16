@@ -1,3 +1,8 @@
 @import './quasar.variables.sass'
-// @import '~quasar-styl'
-// @import '~quasar-addon-styl'
+
+// Use each theme color to overwrite the Quasar background and text classes
+@each $name, $color in $themeColors
+    .bg-#{$name}
+        background: $color !important
+    .text-#{$name}
+        color: $color !important
