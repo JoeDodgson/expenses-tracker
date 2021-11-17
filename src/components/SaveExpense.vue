@@ -74,23 +74,16 @@
           <span class="text-primary">Cost</span>
         </template>
       </q-input>
-      <div class="q-pa-md">
-        <div class="q-gutter-sm">
-          <q-radio
-            ref="typeRef"
-            v-model="type"
-            val="income"
-            label="Income"
-            color="primary"
-          />
-          <q-radio
-            ref="typeRef"
-            v-model="type"
-            val="expense"
-            label="Expense"
-            color="primary"
-          />
-        </div>
+      <div class="bg-grey-2 q-pa-sm rounded-borders">
+        Expense type:
+        <q-option-group
+          ref="typeRef"
+          name="type"
+          v-model="type"
+          :options="typeOptions"
+          color="primary"
+          inline
+        />
       </div>
       <q-btn
         type="submit"
@@ -181,6 +174,16 @@ export default {
       costRef,
       type,
       typeRef,
+      typeOptions: [
+        {
+          label: "Income",
+          value: "income",
+        },
+        {
+          label: "Expense",
+          value: "expense",
+        },
+      ],
       onSubmit(event) {
         event.preventDefault();
         nameRef.value.validate();
