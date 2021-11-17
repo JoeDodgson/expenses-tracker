@@ -4,7 +4,7 @@
       class="q-gutter-md"
       items-start
       id="expenses-form"
-      @submit="onSubmit"
+      @submit.prevent.stop="onSubmit"
       style="max-width: 300px"
     >
       <q-input
@@ -28,8 +28,9 @@
         prefix="Date:"
         filled
         v-model="date"
+        ref="dateRef"
         :rules="[
-          (v) => validDate(v) || 'Date is required in format DD/MM/YYYY',
+          (val) => validDate(val) || 'Date is required in format DD/MM/YYYY',
         ]"
       >
         <template v-slot:append>
@@ -65,6 +66,8 @@
         label-slot
         id="cost"
         name="cost"
+        ref="costRef"
+        :rules="[(val) => validCost(val) || 'Positive 2.d.p number required']"
         @keydown="costKeyDownHandler"
       >
         <template v-slot:label>
@@ -73,8 +76,15 @@
       </q-input>
       <div class="q-pa-md">
         <div class="q-gutter-sm">
-          <q-radio v-model="type" val="income" label="Income" color="primary" />
           <q-radio
+            ref="typeRef"
+            v-model="type"
+            val="income"
+            label="Income"
+            color="primary"
+          />
+          <q-radio
+            ref="typeRef"
             v-model="type"
             val="expense"
             label="Expense"
@@ -113,82 +123,103 @@ const formatCurrency = (value, language, currency) => {
 
 export default {
   name: "SaveExpense",
-  data() {
-    const { resetName, resetDate, resetCost, resetType } =
-      this.getResetInputs();
-    return {
-      name: resetName,
-      date: resetDate,
-      cost: resetCost,
-      type: resetType,
-    };
-  },
   emits: ["add-expense"],
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
-
-      // Round cost to 2.d.p and format to £'s
-      // TODO - add functionality to change currency
-      const newCost = Math.round(this.cost * 100) / 100;
-      const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
-
-      // TODO - increment expense id's
-      const newExpense = {
-        id: Math.floor(Math.random() * 100000),
-        name: this.name,
-        date: this.date,
-        cost: newCost,
-        formattedCost: newFormattedCost,
-        type: this.type,
-      };
-      this.$emit("add-expense", newExpense);
-      // TODO - only reset inputs when expense has been added successfully
-      this.resetInputs();
-    },
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
       return /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
         str
       );
     },
-    // Method to prevent user from entering negative number in cost input field
+    // Check if an input is a positive number with no more than 2.d.p
+    validCost(num) {
+      return (
+        !isNaN(num) &&
+        (Math.floor(num) === num || num.toString().split(".")[1].length <= 2) &&
+        num > 0
+      );
+    },
+    // Prevent user from entering negative number in cost input field
     costKeyDownHandler(event) {
-      if (this.cost < 1 && event.key === "ArrowDown") {
+      if (this.cost <= 0.01 && event.key === "ArrowDown") {
         event.preventDefault();
       }
       if (event.key === "-") {
         event.preventDefault();
       }
-      if (this.cost <= 0) {
+      if (this.cost < 0.01) {
         const { resetCost } = this.getResetInputs();
         this.cost = resetCost;
       }
     },
-    // Returns reset input field values
-    getResetInputs() {
-      const today = new Date();
-      const dd = String(today.getDate()).padStart(2, "0");
-      const mm = String(today.getMonth() + 1).padStart(2, "0");
-      const yyyy = today.getFullYear();
-      const formattedDate = `${dd}/${mm}/${yyyy}`;
+  },
+  setup(_, { emit }) {
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, "0");
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const yyyy = today.getFullYear();
+    const formattedDate = `${dd}/${mm}/${yyyy}`;
 
-      return {
-        resetName: "",
-        resetDate: formattedDate,
-        resetCost: 0.01,
-        resetType: "expense",
-      };
-    },
-    // Sets input field values using the reset values
-    resetInputs() {
-      const { resetName, resetDate, resetCost, resetType } =
-        this.getResetInputs();
-      this.name = ref(resetName);
-      this.date = ref(resetDate);
-      this.cost = ref(resetCost);
-      this.type = ref(resetType);
-    },
+    const name = ref("");
+    const nameRef = ref(null);
+
+    const date = ref(formattedDate);
+    const dateRef = ref(null);
+
+    const cost = ref(0.01);
+    const costRef = ref(null);
+
+    const type = ref("expense");
+    const typeRef = ref(null);
+
+    return {
+      name,
+      nameRef,
+      date,
+      dateRef,
+      cost,
+      costRef,
+      type,
+      typeRef,
+      onSubmit(event) {
+        event.preventDefault();
+        nameRef.value.validate();
+        dateRef.value.validate();
+        costRef.value.validate();
+
+        // TODO - notify user that their expense has or has not been saved
+        if (!nameRef.value.hasError && !dateRef.value.hasError && !costRef.value.hasError) {
+          // Round cost to 2.d.p and format to £'s
+          // TODO - add functionality to change currency
+          const newCost = Math.round(cost.value * 100) / 100;
+          const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
+
+          // TODO - increment expense id's
+          const newExpense = {
+            id: Math.floor(Math.random() * 100000),
+            name: name.value,
+            date: date.value,
+            cost: newCost,
+            formattedCost: newFormattedCost,
+            type: type.value,
+          };
+          emit("add-expense", newExpense);
+
+          this.onReset();
+        }
+      },
+      onReset() {
+        name.value = "";
+        date.value = formattedDate;
+        cost.value = 0.01;
+        type.value = "expense";
+
+        nameRef.value.resetValidation();
+        dateRef.value.resetValidation();
+        costRef.value.resetValidation();
+        typeRef.value.resetValidation();
+      },
+    };
   },
 };
 </script>
