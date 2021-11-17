@@ -1,5 +1,5 @@
 <template>
-<q-layout view="lHh Lpr lFf" class="q-pa-lg">
+  <q-layout view="lHh Lpr lFf" class="q-pa-lg">
     <q-header elevated>
       <q-toolbar>
         <q-btn
@@ -11,23 +11,13 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Expenses Tracker
-        </q-toolbar-title>
+        <q-toolbar-title> Expenses Tracker </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
+        <q-item-label header> Essential Links </q-item-label>
 
         <EssentialLink
           v-for="link in this.linksList"
@@ -38,32 +28,25 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view
+        :expenses="expenses"
+        :balance="balance"
+        @add-expense="addExpense($event)"
+        @delete-expense="deleteExpense($event)"
+      />
     </q-page-container>
+    <Footer />
   </q-layout>
-  <Navbar />
-  <Header />
-  <router-view
-    :expenses="expenses"
-    :balance="balance"
-    @add-expense="addExpense($event)"
-    @delete-expense="deleteExpense($event)"
-  />
-  <Footer />
 </template>
 
 <script>
-import Header from "./components/Header";
-import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { ref } from 'vue'
-import EssentialLink from './components/EssentialLink.vue'
+import { ref } from "vue";
+import EssentialLink from "./components/EssentialLink.vue";
 
 export default {
   name: "App",
   components: {
-    Header,
-    Navbar,
     Footer,
     EssentialLink,
   },
@@ -73,34 +56,34 @@ export default {
       balance: 0,
       linksList: [
         {
-          title: 'Home',
-          caption: '',
-          icon: 'fas fa-home',
-          link: '#/',
+          title: "Home",
+          caption: "",
+          icon: "fas fa-home",
+          link: "#/",
           newTab: false,
         },
         {
-          title: 'Manage Expenses',
-          caption: '',
-          icon: 'fas fa-edit',
-          link: '#/manage-expenses',
+          title: "Manage Expenses",
+          caption: "",
+          icon: "fas fa-edit",
+          link: "#/manage-expenses",
           newTab: false,
         },
         {
-          title: 'About',
-          caption: '',
-          icon: 'fas fa-info',
-          link: '#/about',
+          title: "About",
+          caption: "",
+          icon: "fas fa-info",
+          link: "#/about",
           newTab: false,
         },
         {
-          title: 'Github Repo',
-          caption: 'github.com/JoeDodgson/expenses-tracker',
-          icon: 'fab fa-github',
-          link: 'https://github.com/JoeDodgson/expenses-tracker',
+          title: "Github Repo",
+          caption: "github.com/JoeDodgson/expenses-tracker",
+          icon: "fab fa-github",
+          link: "https://github.com/JoeDodgson/expenses-tracker",
           newTab: true,
         },
-      ]
+      ],
     };
   },
   methods: {
@@ -173,18 +156,17 @@ export default {
     }
     this.updateBalance();
   },
-  setup () {
-    const leftDrawerOpen = ref(false)
+  setup() {
+    const leftDrawerOpen = ref(false);
 
     return {
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+    };
+  },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
