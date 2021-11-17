@@ -11,8 +11,9 @@
         filled
         standout="bg-secondary"
         input-class="text-primary text-weight-bold"
-        v-model="nameModel"
+        v-model="name"
         label-slot
+        ref="nameRef"
         id="name"
         name="name"
         :rules="[(val) => !!val || 'Field is required']"
@@ -21,16 +22,12 @@
           <span class="text-primary">Expense name</span>
         </template>
       </q-input>
-      <!-- <label for="ename">Expense name</label>
-      <input type="text" v-model="name" />
-      <br />
-      <br /> -->
       <q-input
         standout="bg-secondary"
         input-class="text-primary text-weight-bold"
         prefix="Date:"
         filled
-        v-model="dateModel"
+        v-model="date"
         :rules="[
           (v) => validDate(v) || 'Date is required in format DD/MM/YYYY',
         ]"
@@ -46,7 +43,7 @@
               <q-date
                 today-btn
                 color="primary"
-                v-model="dateModel"
+                v-model="date"
                 mask="DD/MM/YYYY"
               >
                 <div class="row items-center justify-end">
@@ -57,18 +54,12 @@
           </q-icon>
         </template>
       </q-input>
-
-      <!-- <label for="date">Date</label>
-      <input type="date" v-model="date" id="date" name="date" />
-      <br />
-      <br /> -->
-
       <q-input
         standout="bg-secondary"
         input-class="text-primary text-weight-bold"
         prefix-class="text-primary"
         prefix="£"
-        v-model.number="costModel"
+        v-model.number="cost"
         type="number"
         step=".01"
         label-slot
@@ -80,12 +71,6 @@
           <span class="text-primary">Cost</span>
         </template>
       </q-input>
-
-      <!-- <label for="cost">Cost</label>
-      <input type="text" v-model="cost" id="cost" name="cost" />
-      <br />
-      <br /> -->
-
       <div class="q-pa-md">
         <div class="q-gutter-sm">
           <q-radio v-model="type" val="income" label="Income" color="primary" />
@@ -97,19 +82,6 @@
           />
         </div>
       </div>
-
-      <!-- <label for="income">Income</label><br />
-      <input type="radio" v-model="type" id="income" name="type" value="income" />
-      <label for="expense">Expense</label><br />
-      <input
-        type="radio"
-        v-model="type"
-        id="expense"
-        name="type"
-        value="expense"
-        checked
-      />
-      <br /> -->
       <q-btn
         type="submit"
         :loading="submitting"
@@ -121,7 +93,6 @@
           <q-spinner-facebook />
         </template>
       </q-btn>
-      <!-- <input type="submit" value="Save Expense" /> -->
     </form>
   </div>
 </template>
@@ -143,39 +114,26 @@ const formatCurrency = (value, language, currency) => {
 export default {
   name: "SaveExpense",
   data() {
+    const { resetName, resetDate, resetCost, resetType } =
+      this.getResetInputs();
     return {
-      ename: "",
-      date: "",
-      cost: "",
-      type: "expense",
+      name: resetName,
+      date: resetDate,
+      cost: resetCost,
+      type: resetType,
     };
   },
   emits: ["add-expense"],
   methods: {
     onSubmit(event) {
-      console.log(`this.name: ${this.name}`);
-      console.log(`this.date: ${this.date}`);
-      console.log(`this.cost: ${this.cost}`);
       event.preventDefault();
 
-      if (!this.name) {
-        alert("Please enter an expense name");
-        return;
-      }
-
-      if (!this.date) {
-        alert("Please select a date");
-        return;
-      }
-
-      if (!this.cost) {
-        alert("Please enter a cost");
-        return;
-      }
-
+      // Round cost to 2.d.p and format to £'s
+      // TODO - add functionality to change currency
       const newCost = Math.round(this.cost * 100) / 100;
       const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
 
+      // TODO - increment expense id's
       const newExpense = {
         id: Math.floor(Math.random() * 100000),
         name: this.name,
@@ -184,43 +142,53 @@ export default {
         formattedCost: newFormattedCost,
         type: this.type,
       };
-
       this.$emit("add-expense", newExpense);
-
-      this.name = "";
-      this.date = "";
-      this.cost = "";
-      this.type = "expense";
+      // TODO - only reset inputs when expense has been added successfully
+      this.resetInputs();
     },
+    // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
       return /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
         str
       );
     },
+    // Method to prevent user from entering negative number in cost input field
     costKeyDownHandler(event) {
-      if (this.costModel < 1 && event.key === "ArrowDown") {
+      if (this.cost < 1 && event.key === "ArrowDown") {
         event.preventDefault();
       }
       if (event.key === "-") {
         event.preventDefault();
       }
-      if (this.costModel < 0) {
-        this.costModel = 0;
+      if (this.cost <= 0) {
+        const { resetCost } = this.getResetInputs();
+        this.cost = resetCost;
       }
     },
-  },
-  setup() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, "0");
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const yyyy = today.getFullYear();
-    const formattedDate = `${dd}/${mm}/${yyyy}`;
+    // Returns reset input field values
+    getResetInputs() {
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, "0");
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const yyyy = today.getFullYear();
+      const formattedDate = `${dd}/${mm}/${yyyy}`;
 
-    return {
-      dateModel: ref(formattedDate),
-      nameModel: ref(""),
-      costModel: ref(0),
-    };
+      return {
+        resetName: "",
+        resetDate: formattedDate,
+        resetCost: 0.01,
+        resetType: "expense",
+      };
+    },
+    // Sets input field values using the reset values
+    resetInputs() {
+      const { resetName, resetDate, resetCost, resetType } =
+        this.getResetInputs();
+      this.name = ref(resetName);
+      this.date = ref(resetDate);
+      this.cost = ref(resetCost);
+      this.type = ref(resetType);
+    },
   },
 };
 </script>
