@@ -18,8 +18,8 @@
 
 
 ## Description
-A website where users can manage expenses. Users add an income or expense in the app and can view their balance.
-
+A website where users can manage expenses. Users add an income or expense in the app and can view their balance. Currently saved data does not persist after refresh, but long term I plan to create a back end which connects to a database.
+This project was a training exercise for me to learn to use Vue.
 
 ## Usage
 No installation required. Access the site at:
@@ -36,6 +36,7 @@ This project was built using:
 * Node
 * Vue
 * SASS
+* Quasar front end framework
 
 
 ## License
