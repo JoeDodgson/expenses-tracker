@@ -8,8 +8,8 @@
       @search-end-date="updateDateFilter('endDate', $event)"
       @search-min-cost="updateCostFilter('minCost', $event)"
       @search-max-cost="updateCostFilter('maxCost', $event)"
+      @sort-expenses="sortExpenses($event)"
     />
-    <SortBy @sort-expenses="sortExpenses($event)" />
     <ExpensesContainer
       :expenses="filteredExpenses"
       @delete-expense="deleteExpense($event)"
@@ -21,14 +21,12 @@
 // @ is an alias to /src
 import SearchExpense from "@/components/SearchExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
-import SortBy from "@/components/SortBy.vue";
 
 export default {
   name: "Home",
   components: {
     SearchExpense,
     ExpensesContainer,
-    SortBy,
   },
   props: {
     expenses: Array,
