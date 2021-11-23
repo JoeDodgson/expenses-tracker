@@ -32,7 +32,7 @@
         :rules="[
           (val) => validDate(val) || 'Date is required in format DD/MM/YYYY',
         ]"
-        @forminput="filterStartDate"
+        @update:model-value="(val) => filterDate(val, 'start')"
       >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -47,6 +47,7 @@
                 color="primary"
                 v-model="searchStartDate"
                 mask="DD/MM/YYYY"
+                @update:model-value="(val) => filterDate(val, 'start')"
               >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -66,6 +67,7 @@
         :rules="[
           (val) => validDate(val) || 'Date is required in format DD/MM/YYYY',
         ]"
+        @update:model-value="(val) => filterDate(val, 'end')"
       >
         <template v-slot:append>
           <q-icon name="event" class="cursor-pointer">
@@ -80,6 +82,7 @@
                 color="primary"
                 v-model="searchEndDate"
                 mask="DD/MM/YYYY"
+                @update:model-value="(val) => filterDate(val, 'end')"
               >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -206,10 +209,15 @@ export default {
     //   const type = event.target.value;
     //   this.$emit("search-type", type);
     // },
-    filterStartDate(event) {
-      console.log("filterStartDate ");
-      const startDate = Date.parse(event.target.value);
-      this.$emit("search-start-date", startDate);
+    filterDate(event, dateType) {
+      // Parse date into MM/DD/YYYY format
+      const dateSplit = event.split("/");
+      const datePreParse = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`
+      const parsedDate = Date.parse(datePreParse);
+      // If date was parsed into a number (i.e. valid date) then emit search-start-date / search-end-date
+      if (!isNaN(parsedDate)) {
+        this.$emit(`search-${dateType}-date`, parsedDate);
+      }
     },
     // searchEndDate(event) {
     //   const endDate = Date.parse(event.target.value);
