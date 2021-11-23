@@ -132,17 +132,14 @@ export default {
         num > 0
       );
     },
-    // Prevent user from entering negative number in cost input field
     costKeyDownHandler(event) {
+      // Prevent user from incrementing cost to 0
       if (this.cost <= 0.01 && event.key === "ArrowDown") {
         event.preventDefault();
       }
+      // Prevent user from entering negative cost
       if (event.key === "-") {
         event.preventDefault();
-      }
-      if (this.cost < 0.01) {
-        const { resetCost } = this.getResetInputs();
-        this.cost = resetCost;
       }
     },
   },
@@ -162,7 +159,7 @@ export default {
     const cost = ref(0.01);
     const costRef = ref(null);
 
-    const type = ref("expense");
+    const type = ref("expenditure");
     const typeRef = ref(null);
 
     return {
@@ -180,8 +177,8 @@ export default {
           value: "income",
         },
         {
-          label: "Expense",
-          value: "expense",
+          label: "Expenditure",
+          value: "expenditure",
         },
       ],
       onSubmit(event) {
@@ -215,7 +212,7 @@ export default {
         name.value = "";
         date.value = formattedDate;
         cost.value = 0.01;
-        type.value = "expense";
+        type.value = "expenditure";
 
         nameRef.value.resetValidation();
         dateRef.value.resetValidation();
