@@ -133,6 +133,7 @@
           :options="searchTypeOptions"
           color="primary"
           inline
+          @update:model-value="(val) => filterType(val)"
         />
       </div>
       <div class="q-pa-md" style="max-width: 300px">
@@ -238,6 +239,9 @@ export default {
         this.$emit(`search-${costType}-cost`, cost);
       }
     },
+    filterType(type) {
+      this.$emit(`search-type`, type);
+    },
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
       return /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
@@ -253,7 +257,6 @@ export default {
       );
     },
     costKeyDownHandler(event, cost) {
-      console.log(event);
       // Prevent user from incrementing cost to 0
       if (cost <= 0.01 && event.key === "ArrowDown") {
         event.preventDefault();
@@ -290,7 +293,7 @@ export default {
     const searchMaxCost = ref(0.01);
     const searchMaxCostRef = ref(null);
 
-    const searchType = ref("expense");
+    const searchType = ref(null);
     const searchTypeRef = ref(null);
 
     const sortBy = ref("Date: Newest to Oldest");
@@ -315,12 +318,12 @@ export default {
           value: "income",
         },
         {
-          label: "Expense",
-          value: "expense",
+          label: "Expenditure",
+          value: "expenditure",
         },
         {
           label: "Both",
-          value: "both",
+          value: null,
         },
       ],
       sortBy,

@@ -54,7 +54,12 @@ export default {
   },
   methods: {
     updateTextFilter(property, value) {
-      this.textFilters[property] = value.toLowerCase();
+      // Convert strings to lower case
+      if (value instanceof String) {
+        this.textFilters[property] = value.toLowerCase();
+      } else {
+        this.textFilters[property] = value;
+      }
       this.filterExpenses();
     },
     updateDateFilter(property, value) {
@@ -71,6 +76,9 @@ export default {
       for (const filterProperty in this.textFilters) {
         const filterValue = this.textFilters[filterProperty];
         updatedFilteredExpenses = updatedFilteredExpenses.filter((expense) => {
+          if (this.textFilters[filterProperty] === null) {
+            return true;
+          }
           return expense[filterProperty].toLowerCase().includes(filterValue);
         });
       }
@@ -114,7 +122,6 @@ export default {
           }
           return true;
         });
-
       this.filteredExpenses = updatedFilteredExpenses;
     },
     sortExpenses(sortType) {
