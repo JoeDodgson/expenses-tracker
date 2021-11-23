@@ -96,20 +96,33 @@
         standout="bg-secondary"
         input-class="text-primary text-weight-bold"
         prefix-class="text-primary"
-        prefix="£"
-        v-model.number="searchCost"
+        prefix="Min cost: £"
+        v-model.number="searchMinCost"
         type="number"
         step=".01"
-        label-slot
-        id="searchCost"
-        name="searchCost"
-        ref="costRef"
+        id="searchMinCost"
+        name="searchMinCost"
+        ref="costMinRef"
         :rules="[(val) => validCost(val) || 'Positive 2.d.p number required']"
-        @keydown="costKeyDownHandler"
+        @keydown="(event) => costKeyDownHandler(event, searchMinCost)"
+        @update:model-value="(val) => filterCost(val, 'min')"
       >
-        <template v-slot:label>
-          <span class="text-primary">Cost</span>
-        </template>
+      </q-input>
+      <q-input
+        standout="bg-secondary"
+        input-class="text-primary text-weight-bold"
+        prefix-class="text-primary"
+        prefix="Max cost: £"
+        v-model.number="searchMaxCost"
+        type="number"
+        step=".01"
+        id="searchMaxCost"
+        name="searchMaxCost"
+        ref="costMaxRef"
+        :rules="[(val) => validCost(val) || 'Positive 2.d.p number required']"
+        @keydown="(event) => costKeyDownHandler(event, searchMaxCost)"
+        @update:model-value="(val) => filterCost(val, 'max')"
+      >
       </q-input>
       <div class="bg-grey-2 q-pa-sm rounded-borders">
         Expense type:
@@ -219,18 +232,12 @@ export default {
         this.$emit(`search-${dateType}-date`, parsedDate);
       }
     },
-    // searchEndDate(event) {
-    //   const endDate = Date.parse(event.target.value);
-    //   this.$emit("search-end-date", endDate);
-    // },
-    // searchMinCost(event) {
-    //   const minCost = event.target.value;
-    //   this.$emit("search-min-cost", minCost);
-    // },
-    // searchMaxCost(event) {
-    //   const maxCost = event.target.value;
-    //   this.$emit("search-max-cost", maxCost);
-    // },
+    filterCost(cost, costType) {
+      // If valid cost was entered (> 0) then emit search-min-cost / search-max-cost
+      if (cost > 0) {
+        this.$emit(`search-${costType}-cost`, cost);
+      }
+    },
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
       return /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
@@ -245,17 +252,15 @@ export default {
         num > 0
       );
     },
-    // Prevent user from entering negative number in cost input field
-    costKeyDownHandler(event) {
-      if (this.cost <= 0.01 && event.key === "ArrowDown") {
+    costKeyDownHandler(event, cost) {
+      console.log(event);
+      // Prevent user from incrementing cost to 0
+      if (cost <= 0.01 && event.key === "ArrowDown") {
         event.preventDefault();
       }
+      // Prevent user from entering negative cost
       if (event.key === "-") {
         event.preventDefault();
-      }
-      if (this.cost < 0.01) {
-        const { resetCost } = this.getResetInputs();
-        this.cost = resetCost;
       }
     },
     sortExpenses(event) {
@@ -279,8 +284,11 @@ export default {
     const searchEndDate = ref(formattedDate);
     const searchEndDateRef = ref(null);
 
-    const searchCost = ref(0.01);
-    const searchCostRef = ref(null);
+    const searchMinCost = ref(0.01);
+    const searchMinCostRef = ref(null);
+
+    const searchMaxCost = ref(0.01);
+    const searchMaxCostRef = ref(null);
 
     const searchType = ref("expense");
     const searchTypeRef = ref(null);
@@ -295,8 +303,10 @@ export default {
       searchStartDateRef,
       searchEndDate,
       searchEndDateRef,
-      searchCost,
-      searchCostRef,
+      searchMinCost,
+      searchMinCostRef,
+      searchMaxCost,
+      searchMaxCostRef,
       searchType,
       searchTypeRef,
       searchTypeOptions: [
