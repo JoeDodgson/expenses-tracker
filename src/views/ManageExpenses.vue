@@ -12,13 +12,12 @@
     />
     <ExpensesContainer
       :expenses="filteredExpenses"
-      @delete-expense="deleteExpense($event)"
+      @delete-expense="$emit('delete-expense', $event)"
     />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import SearchExpense from "@/components/SearchExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
 
@@ -31,6 +30,12 @@ export default {
   props: {
     expenses: Array,
     balance: String,
+  },
+  // Trigger filterExpenses if expenses changes (e.g.. if an expense is deleted)
+  watch: {
+    expenses: function () {
+      this.filterExpenses();
+    },
   },
   data() {
     return {
@@ -159,5 +164,6 @@ export default {
       }
     },
   },
+  emits: ["delete-expense"],
 };
 </script>
