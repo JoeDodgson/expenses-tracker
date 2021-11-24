@@ -1,6 +1,8 @@
 <template>
-  <div >
-    <h3 >Saved Expenses</h3>
+  <div class="row">
+    <h3>Saved Expenses</h3>
+  </div>
+  <div class="q-pa-md items-start q-gutter-md">
     <Expense
       :key="expense.id"
       v-for="expense in expenses"
@@ -24,5 +26,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
