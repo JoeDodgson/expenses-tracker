@@ -22,5 +22,6 @@
       >
     </p>
     <br />
+    <p>© Joe Dodgson {{ new Date().getFullYear() }}</p>
   </div>
 </template>

@@ -35,19 +35,16 @@
         @delete-expense="deleteExpense($event)"
       />
     </q-page-container>
-    <Footer />
   </q-layout>
 </template>
 
 <script>
-import Footer from "./components/Footer";
 import { ref } from "vue";
 import EssentialLink from "./components/EssentialLink.vue";
 
 export default {
   name: "App",
   components: {
-    Footer,
     EssentialLink,
   },
   data() {
