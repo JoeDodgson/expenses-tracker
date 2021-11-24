@@ -1,7 +1,26 @@
 <template>
   <div class="home">
-    <h4 class="text-h4 title-left">Add expense</h4>
-    <SaveExpense @add-expense="$emit('add-expense', $event)" />
+    <div class="q-pa-md q-gutter-sm">
+      <q-btn
+        label="Add expense"
+        color="primary"
+        @click="newExpenseDialog = true"
+      />
+
+      <q-dialog v-model="newExpenseDialog">
+        <q-card>
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h6">New expense</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+
+          <q-card-section class="q-pt-none">
+            <SaveExpense @add-expense="$emit('add-expense', $event)" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </div>
     <div>
       <h3>Balance: {{ balance }}</h3>
     </div>
@@ -13,9 +32,9 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import SaveExpense from "@/components/SaveExpense.vue";
 import ExpensesContainer from "@/components/ExpensesContainer.vue";
+import { ref } from "vue";
 
 export default {
   name: "Home",
@@ -28,5 +47,10 @@ export default {
     balance: String,
   },
   emits: ["add-expense", "delete-expense"],
+  setup() {
+    return {
+      newExpenseDialog: ref(false),
+    };
+  },
 };
 </script>
