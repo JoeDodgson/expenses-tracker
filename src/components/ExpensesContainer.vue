@@ -6,7 +6,11 @@
     <Expense
       :key="expense.id"
       v-for="expense in expenses"
-      :expense="expense"
+      :id="expense.id"
+      :name="expense.name"
+      :date="expense.date"
+      :type="expense.type"
+      :formattedCost="expense.formattedCost"
       @delete-expense="$emit('delete-expense', $event)"
     />
   </div>
