@@ -145,58 +145,10 @@
             :options="sortByOptions"
             label="Sort by"
             color="primary"
-            @input="
-              (val) => {
-                sortExpenses(val);
-              }
-            "
+            @update:model-value="(val) => sortExpenses(val)"
           />
         </div>
       </div>
-      <!-- <form id="expenses-form" action="./expense-processing">
-
-    <br />
-    <br />
-    <label for="startDate">Start date</label>
-    <input type="date" id="" name="" value="" @change="searchStartDate" />
-    <br />
-    <label for="endDate">End date</label>
-    <input type="date" id="" name="" value="" @change="searchEndDate" />
-    <br />
-    <br />
-    <label for="minCost">Minimum cost</label>
-    <input type="text" id="" name="" value="" @keyup="searchMinCost" />
-    <br />
-    <label for="maxCost">Maximum cost</label>
-    <input type="text" id="" name="" value="" @keyup="searchMaxCost" />
-    <br />
-    <br />
-    <input
-      type="radio"
-      id="income"
-      name="etype"
-      value="income"
-      @change="searchType"
-    />
-    <label for="income">Income</label><br />
-    <input
-      type="radio"
-      id="expense"
-      name="etype"
-      value="expenditure"
-      @change="searchType"
-    />
-    <label for="expense">Expenditure</label><br />
-    <input
-      type="radio"
-      id="expense"
-      name="etype"
-      value=""
-      @change="searchType"
-    />
-    <label for="both">Both</label><br />
-    <br />
-  </form> -->
     </form>
   </div>
 </template>
@@ -219,14 +171,10 @@ export default {
       const text = event.target.value;
       this.$emit("search-name", text);
     },
-    // searchType(event) {
-    //   const type = event.target.value;
-    //   this.$emit("search-type", type);
-    // },
     filterDate(event, dateType) {
       // Parse date into MM/DD/YYYY format
       const dateSplit = event.split("/");
-      const datePreParse = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`
+      const datePreParse = `${dateSplit[1]}/${dateSplit[0]}/${dateSplit[2]}`;
       const parsedDate = Date.parse(datePreParse);
       // If date was parsed into a number (i.e. valid date) then emit search-start-date / search-end-date
       if (!isNaN(parsedDate)) {
@@ -267,7 +215,7 @@ export default {
       }
     },
     sortExpenses(event) {
-      const sortType = event.target.value;
+      const sortType = event.value;
       this.$emit("sort-expenses", sortType);
     },
   },
@@ -354,37 +302,6 @@ export default {
           value: "value-h-l",
         },
       ],
-      // onSubmit(event) {
-      //   event.preventDefault();
-      //   nameRef.value.validate();
-      //   dateRef.value.validate();
-      //   costRef.value.validate();
-
-      //   // TODO - notify user that their expense has or has not been saved
-      //   if (
-      //     !nameRef.value.hasError &&
-      //     !dateRef.value.hasError &&
-      //     !costRef.value.hasError
-      //   ) {
-      //     // Round cost to 2.d.p and format to £'s
-      //     // TODO - add functionality to change currency
-      //     const newCost = Math.round(cost.value * 100) / 100;
-      //     const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
-
-      //     // TODO - increment expense id's
-      //     const newExpense = {
-      //       id: Math.floor(Math.random() * 100000),
-      //       name: name.value,
-      //       date: date.value,
-      //       cost: newCost,
-      //       formattedCost: newFormattedCost,
-      //       type: type.value,
-      //     };
-      //     emit("add-expense", newExpense);
-
-      //     this.onReset();
-      //   }
-      // },
     };
   },
 };
