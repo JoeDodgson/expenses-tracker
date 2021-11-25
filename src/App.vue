@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="q-pa-lg">
-    <q-header elevated>
+    <q-header elevated class="bg-primary">
       <q-toolbar>
         <q-btn
           flat
@@ -31,7 +31,8 @@
       <router-view
         :expenses="expenses"
         :balance="balance"
-        @add-expense="addExpense($event)"
+        @create-expense="createExpense($event)"
+        @edit-expense="editExpense($event)"
         @delete-expense="deleteExpense($event)"
       />
     </q-page-container>
@@ -84,12 +85,20 @@ export default {
     };
   },
   methods: {
-    deleteExpense(id) {
-      this.expenses = this.expenses.filter((expense) => expense.id !== id);
+    createExpense(expense) {
+      this.expenses = [...this.expenses, expense];
       this.updateBalance();
     },
-    addExpense(expense) {
-      this.expenses = [...this.expenses, expense];
+    editExpense(updatedExpense) {
+      console.log("editExpense");
+      this.expenses = this.expenses.filter(
+        (expense) => expense.id !== updatedExpense.id
+      );
+      this.expenses = [...this.expenses, updatedExpense];
+      this.updateBalance();
+    },
+    deleteExpense(id) {
+      this.expenses = this.expenses.filter((expense) => expense.id !== id);
       this.updateBalance();
     },
     formatCurrency(value, language, currency) {

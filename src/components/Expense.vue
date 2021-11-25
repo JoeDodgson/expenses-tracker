@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-py-sm">
+  <div class="row q-py-sm" @click="editExpenseDialog = true">
     <div class="col-grow">
       <q-card class="my-card bg-grey-1">
         <q-card-section class="justify-between">
@@ -30,9 +30,30 @@
       </q-card>
     </div>
   </div>
+  <q-dialog v-model="editExpenseDialog">
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">Edit expense</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+
+      <q-card-section class="q-pt-none">
+        <SaveExpense
+          @create-expense="$emit('create-expense', $event)"
+          @edit-expense="$emit('edit-expense', $event)"
+          saveType="edit"
+          :id="id"
+        />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
+import { ref } from "vue";
+import SaveExpense from "@/components/SaveExpense.vue";
+
 export default {
   name: "Expense",
   props: {
@@ -42,7 +63,15 @@ export default {
     type: String,
     formattedCost: String,
   },
-  emits: ["delete-expense"],
+  components: {
+    SaveExpense,
+  },
+  emits: ["create-expense", "edit-expense"],
+  setup() {
+    return {
+      editExpenseDialog: ref(false),
+    };
+  },
 };
 </script>
 

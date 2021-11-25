@@ -4,7 +4,7 @@
       class="q-gutter-md"
       items-start
       id="expenses-form"
-      @submit.prevent.stop="onSubmit"
+      @submit.prevent.stop="onSubmit($event, saveType, id)"
       style="max-width: 300px"
     >
       <q-input
@@ -116,7 +116,11 @@ const formatCurrency = (value, language, currency) => {
 
 export default {
   name: "SaveExpense",
-  emits: ["add-expense"],
+  props: {
+    saveType: String,
+    id: Number,
+  },
+  emits: ["create-expense", "edit-expense"],
   methods: {
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
@@ -181,29 +185,47 @@ export default {
           value: "expenditure",
         },
       ],
-      onSubmit(event) {
+      onSubmit(event, createOrEdit, expenseId) {
+        console.log(`createOrEdit: ${createOrEdit}`);
         event.preventDefault();
         nameRef.value.validate();
         dateRef.value.validate();
         costRef.value.validate();
 
         // TODO - notify user that their expense has or has not been saved
-        if (!nameRef.value.hasError && !dateRef.value.hasError && !costRef.value.hasError) {
+        if (
+          !nameRef.value.hasError &&
+          !dateRef.value.hasError &&
+          !costRef.value.hasError
+        ) {
           // Round cost to 2.d.p and format to £'s
           // TODO - add functionality to change currency
           const newCost = Math.round(cost.value * 100) / 100;
           const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
 
-          // TODO - increment expense id's
+          console.log(type);
+
           const newExpense = {
-            id: Math.floor(Math.random() * 100000),
             name: name.value,
             date: date.value,
             cost: newCost,
             formattedCost: newFormattedCost,
             type: type.value,
           };
-          emit("add-expense", newExpense);
+
+          let emitName;
+
+          if (createOrEdit === "edit") {
+            newExpense.id = expenseId;
+            emitName = "edit-expense";
+          } else {
+            // TODO - increment expense id's
+            newExpense.id = Math.floor(Math.random() * 100000);
+            emitName = "create-expense";
+          }
+          console.log(emitName);
+          console.log(newExpense);
+          emit(emitName, newExpense);
 
           this.onReset();
         }
@@ -217,7 +239,6 @@ export default {
         nameRef.value.resetValidation();
         dateRef.value.resetValidation();
         costRef.value.resetValidation();
-        typeRef.value.resetValidation();
       },
     };
   },

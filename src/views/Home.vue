@@ -1,32 +1,42 @@
 <template>
   <div class="home">
-    <div class="q-pa-md q-gutter-sm">
-      <q-btn
-        label="Add expense"
-        color="primary"
-        @click="newExpenseDialog = true"
-      />
-
-      <q-dialog v-model="newExpenseDialog">
-        <q-card>
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-h6">New expense</div>
-            <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-            <SaveExpense @add-expense="$emit('add-expense', $event)" />
-          </q-card-section>
-        </q-card>
-      </q-dialog>
+    <div class="row">
+      <h1 class="col text-h2 text-center">{{ balance }}</h1>
     </div>
-    <div>
-      <h3>Balance: {{ balance }}</h3>
+    <div class="row text-center reverse-wrap items-center">
+      <div class="col-12 col-sm-9">
+        <h4 class="text-h4 q-ma-sm">My Expenses</h4>
+      </div>
+      <div class="col-12 col-sm-3">
+        <q-btn
+          label="Add expense"
+          color="primary"
+          @click="createExpenseDialog = true"
+        />
+
+        <q-dialog v-model="createExpenseDialog">
+          <q-card>
+            <q-card-section class="row items-center q-pb-none">
+              <div class="text-h6">New expense</div>
+              <q-space />
+              <q-btn icon="close" flat round dense v-close-popup />
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">
+              <SaveExpense
+                @create-expense="$emit('create-expense', $event)"
+                @edit-expense="$emit('edit-expense', $event)"
+                @delete-expense="$emit('delete-expense', $event)"
+              />
+            </q-card-section>
+          </q-card>
+        </q-dialog>
+      </div>
     </div>
     <ExpensesContainer
       :expenses="expenses"
       @delete-expense="$emit('delete-expense', $event)"
+      @edit-expense="$emit('edit-expense', $event)"
     />
   </div>
 </template>
@@ -46,10 +56,10 @@ export default {
     expenses: Array,
     balance: String,
   },
-  emits: ["add-expense", "delete-expense"],
+  emits: ["create-expense", "edit-expense", "delete-expense"],
   setup() {
     return {
-      newExpenseDialog: ref(false),
+      createExpenseDialog: ref(false),
     };
   },
 };
