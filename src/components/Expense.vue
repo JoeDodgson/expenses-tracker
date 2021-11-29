@@ -20,11 +20,6 @@
               {{ type === "income" ? "+" : "-" }}
               {{ formattedCost }}
             </div>
-            <div class="col-6 col-md-1 text-left">
-              <q-btn flat @click="$emit('delete-expense', id)">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-              </q-btn>
-            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -40,8 +35,8 @@
 
       <q-card-section class="q-pt-none">
         <SaveExpense
-          @create-expense="$emit('create-expense', $event)"
           @edit-expense="$emit('edit-expense', $event)"
+          @delete-expense="$emit('delete-expense', $event)"
           saveType="edit"
           :id="id"
         />
@@ -66,7 +61,7 @@ export default {
   components: {
     SaveExpense,
   },
-  emits: ["create-expense", "edit-expense"],
+  emits: ["create-expense", "edit-expense", "delete-expense"],
   setup() {
     return {
       editExpenseDialog: ref(false),

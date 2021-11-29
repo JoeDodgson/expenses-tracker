@@ -85,17 +85,31 @@
           inline
         />
       </div>
-      <q-btn
-        type="submit"
-        :loading="submitting"
-        label="Save"
-        class="q-mt-md"
-        color="primary"
-      >
-        <template v-slot:loading>
-          <q-spinner-facebook />
-        </template>
-      </q-btn>
+      <div class="row justify-center q-gutter-sm">
+        <q-btn
+          type="submit"
+          :loading="submitting"
+          size="md"
+          label="Save"
+          class="q-mt-md"
+          color="positive"
+        >
+          <template v-slot:loading>
+            <q-spinner-facebook />
+          </template>
+        </q-btn>
+        <!-- Only display the Delete button when editing an existing expense -->
+        <q-btn
+          v-if="saveType == 'edit'"
+          :loading="deleting"
+          size="md"
+          label="Delete"
+          class="q-mt-md"
+          color="negative"
+          @click="$emit('delete-expense', id)"
+        >
+        </q-btn>
+      </div>
     </form>
   </div>
 </template>
@@ -120,7 +134,7 @@ export default {
     saveType: String,
     id: Number,
   },
-  emits: ["create-expense", "edit-expense"],
+  emits: ["create-expense", "edit-expense", "delete-expense"],
   methods: {
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
@@ -186,7 +200,6 @@ export default {
         },
       ],
       onSubmit(event, createOrEdit, expenseId) {
-        console.log(`createOrEdit: ${createOrEdit}`);
         event.preventDefault();
         nameRef.value.validate();
         dateRef.value.validate();
@@ -202,8 +215,6 @@ export default {
           // TODO - add functionality to change currency
           const newCost = Math.round(cost.value * 100) / 100;
           const newFormattedCost = formatCurrency(newCost, "en-GB", "GBP");
-
-          console.log(type);
 
           const newExpense = {
             name: name.value,
@@ -223,8 +234,6 @@ export default {
             newExpense.id = Math.floor(Math.random() * 100000);
             emitName = "create-expense";
           }
-          console.log(emitName);
-          console.log(newExpense);
           emit(emitName, newExpense);
 
           this.onReset();

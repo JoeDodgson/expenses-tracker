@@ -10,8 +10,9 @@
       :formattedCost="expense.formattedCost"
       @create-expense="$emit('create-expense', $event)"
       @edit-expense="$emit('edit-expense', $event)"
+      @delete-expense="$emit('delete-expense', $event)"
     />
-    <q-dialog v-model="newExpenseDialog">
+    <q-dialog v-model="createExpenseDialog">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">New expense</div>
@@ -20,7 +21,10 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <SaveExpense @create-expense="$emit('create-expense', $event)" />
+          <SaveExpense
+            saveType="create"
+            @create-expense="$emit('create-expense', $event)"
+          />
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -37,7 +41,7 @@ export default {
   props: {
     expenses: Array,
   },
-  emits: ["create-expense", "edit-expense"],
+  emits: ["create-expense", "edit-expense", "delete-expense"],
 };
 </script>
 
