@@ -24,9 +24,8 @@
 
             <q-card-section class="q-pt-none">
               <SaveExpense
+                saveType="create"
                 @create-expense="$emit('create-expense', $event)"
-                @edit-expense="$emit('edit-expense', $event)"
-                @delete-expense="$emit('delete-expense', $event)"
               />
             </q-card-section>
           </q-card>
