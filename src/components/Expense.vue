@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-py-sm" @click="editExpenseDialog = true">
+  <div class="row q-py-sm animate__pulse" @click="editExpenseDialog = true">
     <div class="col-grow">
       <q-card class="my-card bg-grey-1">
         <q-card-section class="justify-between">
@@ -38,7 +38,11 @@
           @edit-expense="$emit('edit-expense', $event)"
           @delete-expense="$emit('delete-expense', $event)"
           saveType="edit"
-          :id="id"
+          :existingId="id"
+          :existingName="name"
+          :existingDate="date"
+          :existingCost="cost"
+          :existingType="type"
         />
       </q-card-section>
     </q-card>
@@ -55,6 +59,7 @@ export default {
     id: Number,
     name: String,
     date: String,
+    cost: Number,
     type: String,
     formattedCost: String,
   },

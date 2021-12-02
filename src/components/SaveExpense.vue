@@ -4,7 +4,7 @@
       class="q-gutter-md"
       items-start
       id="expenses-form"
-      @submit.prevent.stop="onSubmit($event, saveType, id)"
+      @submit.prevent.stop="onSubmit($event, saveType, existingId)"
       style="max-width: 300px"
     >
       <q-input
@@ -88,15 +88,11 @@
       <div class="row justify-center q-gutter-sm">
         <q-btn
           type="submit"
-          :loading="submitting"
           size="md"
           label="Save"
           class="q-mt-md"
           color="positive"
         >
-          <template v-slot:loading>
-            <q-spinner-facebook />
-          </template>
         </q-btn>
         <!-- Only display the Delete button when editing an existing expense -->
         <q-btn
@@ -106,7 +102,7 @@
           label="Delete"
           class="q-mt-md"
           color="negative"
-          @click="$emit('delete-expense', id)"
+          @click="$emit('delete-expense', existingId)"
         >
         </q-btn>
       </div>
@@ -132,7 +128,11 @@ export default {
   name: "SaveExpense",
   props: {
     saveType: String,
-    id: Number,
+    existingName: String,
+    existingId: Number,
+    existingDate: String,
+    existingCost: String,
+    existingType: String,
   },
   emits: ["create-expense", "edit-expense", "delete-expense"],
   methods: {
@@ -161,23 +161,43 @@ export default {
       }
     },
   },
-  setup(_, { emit }) {
+  setup(props, { emit }) {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yyyy = today.getFullYear();
     const formattedDate = `${dd}/${mm}/${yyyy}`;
 
-    const name = ref("");
-    const nameRef = ref(null);
+    let name;
+    if ("existingName" in props) {
+      name = ref(props.existingName);
+    } else {
+      name = ref("");
+    }
+    const nameRef = ref("");
 
-    const date = ref(formattedDate);
+    let date;
+    if ("existingDate" in props) {
+      date = ref(props.existingDate);
+    } else {
+      date = ref(formattedDate);
+    }
     const dateRef = ref(null);
 
-    const cost = ref(0.01);
+    let cost;
+    if ("existingCost" in props) {
+      cost = ref(props.existingCost);
+    } else {
+      cost = ref(0.01);
+    }
     const costRef = ref(null);
 
-    const type = ref("expenditure");
+    let type;
+    if ("existingType" in props) {
+      type = ref(props.existingType);
+    } else {
+      type = ref("expenditure");
+    }
     const typeRef = ref(null);
 
     return {
