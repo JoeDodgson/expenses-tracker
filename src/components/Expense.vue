@@ -1,7 +1,7 @@
 <template>
   <div class="row q-py-sm animate__pulse" @click="editExpenseDialog = true">
     <div class="col-grow">
-      <q-card class="my-card bg-grey-1">
+      <q-card class="my-card bg-grey-1 expense-card">
         <q-card-section class="justify-between">
           <div class="row">
             <div class="col-6 col-md-8 text-left">
