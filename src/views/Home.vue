@@ -1,7 +1,13 @@
 <template>
   <div class="home">
     <div class="row">
-      <h1 class="col text-h2 text-center">{{ balance }}</h1>
+      <h1 class="col text-h2 text-center">
+        {{ balance }}
+        <q-tooltip anchor="top middle" self="bottom middle" class="text-body2">
+          Balance is calculated as the sum of income minus the sum of
+          expenditure
+        </q-tooltip>
+      </h1>
     </div>
     <div class="row text-center reverse-wrap items-center">
       <div class="col-12 col-sm-9">
