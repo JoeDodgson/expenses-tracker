@@ -102,11 +102,34 @@
           label="Delete"
           class="q-mt-md"
           color="negative"
-          @click="$emit('delete-expense', existingId)"
+          @click="deleteDialogRef = true"
         >
         </q-btn>
       </div>
     </form>
+    <q-dialog
+      v-model="deleteDialogRef"
+      persistent
+      transition-show="scale"
+      transition-hide="scale"
+    >
+      <q-card class="bg-warning" style="width: 300px">
+        <q-card-section>
+          <div class="text-h6 text-center">
+            Are you sure you want to delete this expense?
+          </div>
+        </q-card-section>
+
+        <q-card-actions class="bg-white row justify-center q-gutter-sm">
+          <q-btn
+            flat
+            label="Yes"
+            @click="$emit('delete-expense', existingId)"
+          />
+          <q-btn flat label="No" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -200,6 +223,8 @@ export default {
     }
     const typeRef = ref(null);
 
+    const deleteDialogRef = ref(false);
+
     return {
       name,
       nameRef,
@@ -219,6 +244,7 @@ export default {
           value: "expenditure",
         },
       ],
+      deleteDialogRef,
       onSubmit(event, createOrEdit, expenseId) {
         event.preventDefault();
         nameRef.value.validate();
