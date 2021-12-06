@@ -126,10 +126,10 @@ export default {
     this.expenses = [
       {
         id: 1,
-        name: "Arup September pay",
+        name: "September pay",
         date: "2021-09-15",
-        cost: 2000,
-        formattedCost: "£2000.00",
+        cost: 1000,
+        formattedCost: "£1000.00",
         type: "income",
       },
       {
@@ -142,11 +142,19 @@ export default {
       },
       {
         id: 3,
-        name: "Red Hot Chili Peppers tickets",
+        name: "Concert tickets",
         date: "2021-10-13",
         cost: 190,
         formattedCost: "£190.00",
         type: "expenditure",
+      },
+      {
+        id: 4,
+        name: "October pay",
+        date: "2021-10-15",
+        cost: 1100,
+        formattedCost: "£1100.00",
+        type: "income",
       },
     ];
     for (let i = 0; i < this.expenses.length; i++) {
