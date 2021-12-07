@@ -47,18 +47,21 @@ import { useQuasar } from "quasar";
 const alerts = {
   create: {
     color: "positive",
-    icon: "report_problem",
+    icon: "fas fa-check",
     message: "New expense was added",
+    timeout: 5000,
   },
   update: {
     color: "positive",
     message: "Expense was updated",
-    icon: "report_problem",
+    icon: "fas fa-check",
+    timeout: 5000,
   },
   delete: {
     color: "positive",
+    icon: "fas fa-check",
     message: "Expense was deleted",
-    icon: "report_problem",
+    timeout: 5000,
   },
 };
 
@@ -119,7 +122,7 @@ export default {
     deleteExpense(id) {
       this.expenses = this.expenses.filter((expense) => expense.id !== id);
       this.updateBalance();
-      this.showNotif("delete", "center");
+      this.showNotif("delete", "bottom");
     },
     formatCurrency(value, language, currency) {
       const formattedCurrency = new Intl.NumberFormat(
@@ -200,51 +203,19 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       showNotif(type, position) {
-        console.log("showNotif");
-        const { color, textColor, multiLine, icon, message, avatar } =
+        const { color, textColor, multiLine, icon, message, avatar, actions, timeout } =
           alerts[type];
-        const random = Math.random() * 100;
-
-        const twoActions = random > 70;
-        const buttonColor = color ? "white" : void 0;
 
         $q.notify({
           color,
           textColor,
-          icon: random > 30 ? icon : null,
+          icon,
           message,
           position,
           avatar,
           multiLine,
-          actions: twoActions
-            ? [
-                {
-                  label: "Reply",
-                  color: buttonColor,
-                  handler: () => {
-                    /* console.log('wooow') */
-                  },
-                },
-                {
-                  label: "Dismiss",
-                  color: "yellow",
-                  handler: () => {
-                    /* console.log('wooow') */
-                  },
-                },
-              ]
-            : random > 40
-            ? [
-                {
-                  label: "Reply",
-                  color: buttonColor,
-                  handler: () => {
-                    /* console.log('wooow') */
-                  },
-                },
-              ]
-            : null,
-          timeout: Math.random() * 5000 + 3000,
+          actions,
+          timeout,
         });
       },
     };
