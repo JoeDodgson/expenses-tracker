@@ -42,6 +42,25 @@
 <script>
 import { ref } from "vue";
 import EssentialLink from "./components/EssentialLink.vue";
+import { useQuasar } from "quasar";
+
+const alerts = {
+  create: {
+    color: "positive",
+    icon: "report_problem",
+    message: "New expense was added",
+  },
+  update: {
+    color: "positive",
+    message: "Expense was updated",
+    icon: "report_problem",
+  },
+  delete: {
+    color: "positive",
+    message: "Expense was deleted",
+    icon: "report_problem",
+  },
+};
 
 export default {
   name: "App",
@@ -100,6 +119,7 @@ export default {
     deleteExpense(id) {
       this.expenses = this.expenses.filter((expense) => expense.id !== id);
       this.updateBalance();
+      this.showNotif("delete", "center");
     },
     formatCurrency(value, language, currency) {
       const formattedCurrency = new Intl.NumberFormat(
@@ -171,12 +191,61 @@ export default {
     this.updateBalance();
   },
   setup() {
+    const $q = useQuasar();
     const leftDrawerOpen = ref(false);
 
     return {
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+      showNotif(type, position) {
+        console.log("showNotif");
+        const { color, textColor, multiLine, icon, message, avatar } =
+          alerts[type];
+        const random = Math.random() * 100;
+
+        const twoActions = random > 70;
+        const buttonColor = color ? "white" : void 0;
+
+        $q.notify({
+          color,
+          textColor,
+          icon: random > 30 ? icon : null,
+          message,
+          position,
+          avatar,
+          multiLine,
+          actions: twoActions
+            ? [
+                {
+                  label: "Reply",
+                  color: buttonColor,
+                  handler: () => {
+                    /* console.log('wooow') */
+                  },
+                },
+                {
+                  label: "Dismiss",
+                  color: "yellow",
+                  handler: () => {
+                    /* console.log('wooow') */
+                  },
+                },
+              ]
+            : random > 40
+            ? [
+                {
+                  label: "Reply",
+                  color: buttonColor,
+                  handler: () => {
+                    /* console.log('wooow') */
+                  },
+                },
+              ]
+            : null,
+          timeout: Math.random() * 5000 + 3000,
+        });
       },
     };
   },
