@@ -110,6 +110,7 @@ export default {
     createExpense(expense) {
       this.expenses = [...this.expenses, expense];
       this.updateBalance();
+      this.showNotif("create", "bottom");
     },
     editExpense(updatedExpense) {
       console.log("editExpense");
@@ -118,6 +119,7 @@ export default {
       );
       this.expenses = [...this.expenses, updatedExpense];
       this.updateBalance();
+      this.showNotif("update", "bottom");
     },
     deleteExpense(id) {
       this.expenses = this.expenses.filter((expense) => expense.id !== id);
