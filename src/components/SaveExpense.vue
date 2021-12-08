@@ -92,6 +92,7 @@
           label="Save"
           class="q-mt-md"
           color="positive"
+          v-close-popup
         >
         </q-btn>
         <!-- Only display the Delete button when editing an existing expense -->
