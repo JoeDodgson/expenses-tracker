@@ -152,7 +152,7 @@ export default {
       {
         id: 1,
         name: "September pay",
-        date: "2021-09-15",
+        date: "15/09/2021",
         cost: 1000,
         formattedCost: "£1000.00",
         type: "income",
@@ -160,7 +160,7 @@ export default {
       {
         id: 2,
         name: "Tesco food shopping",
-        date: "2021-10-01",
+        date: "01/10/2021",
         cost: 50.99,
         formattedCost: "£50.99",
         type: "expenditure",
@@ -168,7 +168,7 @@ export default {
       {
         id: 3,
         name: "Concert tickets",
-        date: "2021-10-13",
+        date: "13/10/2021",
         cost: 190,
         formattedCost: "£190.00",
         type: "expenditure",
@@ -176,7 +176,7 @@ export default {
       {
         id: 4,
         name: "October pay",
-        date: "2021-10-15",
+        date: "15/10/2021",
         cost: 1100,
         formattedCost: "£1100.00",
         type: "income",
