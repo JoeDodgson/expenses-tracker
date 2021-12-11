@@ -98,7 +98,6 @@
         <!-- Only display the Delete button when updating an existing expense -->
         <q-btn
           v-if="saveType == 'update'"
-          :loading="deleting"
           size="md"
           label="Delete"
           class="q-mt-md"
