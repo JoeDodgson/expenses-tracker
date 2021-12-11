@@ -1,6 +1,9 @@
 <template>
-  <div class="row q-py-sm animate__pulse" @click="editExpenseDialog = true">
-    <div class="col-grow">
+  <div
+    class="row justify-center q-py-sm animate__pulse"
+    @click="editExpenseDialog = true"
+  >
+    <div class="mw-1000 col-grow">
       <q-card class="my-card bg-grey-1 expense-card">
         <q-card-section class="justify-between">
           <div class="row">
