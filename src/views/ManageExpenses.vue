@@ -13,7 +13,7 @@
     <ExpensesContainer
       :expenses="filteredExpenses"
       @create-expense="$emit('create-expense', $event)"
-      @edit-expense="$emit('edit-expense', $event)"
+      @update-expense="$emit('update-expense', $event)"
       @delete-expense="$emit('delete-expense', $event)"
     />
   </div>
@@ -33,7 +33,7 @@ export default {
     expenses: Array,
     balance: String,
   },
-  emits: ["create-expense", "edit-expense", "delete-expense"],
+  emits: ["create-expense", "update-expense", "delete-expense"],
   // Trigger filterExpenses if expenses changes (e.g.. if an expense is deleted)
   watch: {
     expenses: function () {

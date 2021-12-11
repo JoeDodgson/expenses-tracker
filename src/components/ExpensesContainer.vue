@@ -10,7 +10,7 @@
       :formattedCost="expense.formattedCost"
       :type="expense.type"
       @create-expense="$emit('create-expense', $event)"
-      @edit-expense="$emit('edit-expense', $event)"
+      @update-expense="$emit('update-expense', $event)"
       @delete-expense="$emit('delete-expense', $event)"
     />
     <q-dialog v-model="createExpenseDialog">
@@ -42,7 +42,7 @@ export default {
   props: {
     expenses: Array,
   },
-  emits: ["create-expense", "edit-expense", "delete-expense"],
+  emits: ["create-expense", "update-expense", "delete-expense"],
 };
 </script>
 

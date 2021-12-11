@@ -95,9 +95,9 @@
           v-close-popup
         >
         </q-btn>
-        <!-- Only display the Delete button when editing an existing expense -->
+        <!-- Only display the Delete button when updating an existing expense -->
         <q-btn
-          v-if="saveType == 'edit'"
+          v-if="saveType == 'update'"
           :loading="deleting"
           size="md"
           label="Delete"
@@ -158,7 +158,7 @@ export default {
     existingCost: String,
     existingType: String,
   },
-  emits: ["create-expense", "edit-expense", "delete-expense"],
+  emits: ["create-expense", "update-expense", "delete-expense"],
   methods: {
     // Regex to validate a date in the format DD/MM/YYYY (includes days of month and leap years)
     validDate(str) {
@@ -246,7 +246,7 @@ export default {
         },
       ],
       deleteDialogRef,
-      onSubmit(event, createOrEdit, expenseId) {
+      onSubmit(event, createOrUpdate, expenseId) {
         event.preventDefault();
         nameRef.value.validate();
         dateRef.value.validate();
@@ -273,9 +273,9 @@ export default {
 
           let emitName;
 
-          if (createOrEdit === "edit") {
+          if (createOrUpdate === "update") {
             newExpense.id = expenseId;
-            emitName = "edit-expense";
+            emitName = "update-expense";
           } else {
             // TODO - increment expense id's
             newExpense.id = Math.floor(Math.random() * 100000);

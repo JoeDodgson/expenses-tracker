@@ -32,7 +32,7 @@
         :expenses="expenses"
         :balance="balance"
         @create-expense="createExpense($event)"
-        @edit-expense="editExpense($event)"
+        @update-expense="updateExpense($event)"
         @delete-expense="deleteExpense($event)"
       />
     </q-page-container>
@@ -112,8 +112,8 @@ export default {
       this.updateBalance();
       this.showNotif("create", "bottom");
     },
-    editExpense(updatedExpense) {
-      console.log("editExpense");
+    updateExpense(updatedExpense) {
+      console.log("updateExpense");
       this.expenses = this.expenses.filter(
         (expense) => expense.id !== updatedExpense.id
       );

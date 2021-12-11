@@ -45,7 +45,7 @@
     <ExpensesContainer
       :expenses="expenses"
       @delete-expense="$emit('delete-expense', $event)"
-      @edit-expense="$emit('edit-expense', $event)"
+      @update-expense="$emit('update-expense', $event)"
     />
   </div>
 </template>
@@ -65,7 +65,7 @@ export default {
     expenses: Array,
     balance: String,
   },
-  emits: ["create-expense", "edit-expense", "delete-expense"],
+  emits: ["create-expense", "update-expense", "delete-expense"],
   setup() {
     return {
       createExpenseDialog: ref(false),

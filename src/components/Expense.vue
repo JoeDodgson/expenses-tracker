@@ -1,7 +1,7 @@
 <template>
   <div
     class="row justify-center q-py-sm animate__pulse"
-    @click="editExpenseDialog = true"
+    @click="updateExpenseDialog = true"
   >
     <div class="mw-1000 col-grow">
       <q-card class="my-card bg-grey-1 expense-card">
@@ -28,19 +28,19 @@
       </q-card>
     </div>
   </div>
-  <q-dialog v-model="editExpenseDialog">
+  <q-dialog v-model="updateExpenseDialog">
     <q-card>
       <q-card-section class="row items-center q-pb-none">
-        <div class="text-h6">Edit expense</div>
+        <div class="text-h6">Update expense</div>
         <q-space />
         <q-btn icon="close" flat round dense v-close-popup />
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <SaveExpense
-          @edit-expense="$emit('edit-expense', $event)"
+          @update-expense="$emit('update-expense', $event)"
           @delete-expense="$emit('delete-expense', $event)"
-          saveType="edit"
+          saveType="update"
           :existingId="id"
           :existingName="name"
           :existingDate="date"
@@ -69,10 +69,10 @@ export default {
   components: {
     SaveExpense,
   },
-  emits: ["create-expense", "edit-expense", "delete-expense"],
+  emits: ["create-expense", "update-expense", "delete-expense"],
   setup() {
     return {
-      editExpenseDialog: ref(false),
+      updateExpenseDialog: ref(false),
     };
   },
 };
