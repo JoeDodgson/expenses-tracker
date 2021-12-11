@@ -44,7 +44,7 @@
           :existingId="id"
           :existingName="name"
           :existingDate="date"
-          :existingCost="cost"
+          :existingCost="cost.toString()"
           :existingType="type"
         />
       </q-card-section>
