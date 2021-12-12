@@ -167,11 +167,7 @@ export default {
     },
     // Check if an input is a positive number with no more than 2.d.p
     validCost(num) {
-      return (
-        !isNaN(num) &&
-        (Math.floor(num) === num || num.toString().split(".")[1].length <= 2) &&
-        num > 0
-      );
+      return !isNaN(num) && Math.floor(100 * num) === 100 * num && num > 0;
     },
     costKeyDownHandler(event) {
       // Prevent user from incrementing cost to 0
@@ -251,7 +247,7 @@ export default {
         dateRef.value.validate();
         costRef.value.validate();
 
-        // TODO - notify user that their expense has or has not been saved
+        // TODO - notify user if their expense has not been saved
         if (
           !nameRef.value.hasError &&
           !dateRef.value.hasError &&
