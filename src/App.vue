@@ -113,7 +113,6 @@ export default {
       this.showNotif("create", "bottom");
     },
     updateExpense(updatedExpense) {
-      console.log("updateExpense");
       this.expenses = this.expenses.filter(
         (expense) => expense.id !== updatedExpense.id
       );
