@@ -1,0 +1,21 @@
+@use "sass:map"
+@import './quasar.variables.sass'
+
+// Use each theme color to overwrite the Quasar background and text classes
+@each $name, $color in $themeColors
+    .bg-#{$name}
+        background: $color !important
+    .text-#{$name}
+        color: $color !important
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+.expense-card:hover
+    cursor: pointer
+    background-color: map.get($themeColors, "secondary") !important
+
+.mw-1000
+    max-width: 1000px !important

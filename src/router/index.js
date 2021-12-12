@@ -10,14 +10,12 @@ const routes = [
   {
     path: "/manage-expenses",
     name: "Manage Expenses",
-    component: () =>
-      import("@/views/ManageExpenses.vue"),
+    component: () => import("@/views/ManageExpenses.vue"),
   },
   {
     path: "/about",
     name: "About",
-    component: () =>
-      import("@/views/About.vue"),
+    component: () => import("@/views/About.vue"),
   },
 ];
 
