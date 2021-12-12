@@ -13,22 +13,6 @@
       @update-expense="$emit('update-expense', $event)"
       @delete-expense="$emit('delete-expense', $event)"
     />
-    <q-dialog v-model="createExpenseDialog">
-      <q-card>
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">New expense</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          <SaveExpense
-            saveType="create"
-            @create-expense="$emit('create-expense', $event)"
-          />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
